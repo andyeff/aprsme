@@ -100,7 +100,7 @@ Retrieve publish & deliver rates for the aprs:archive queue:
 
 ## Dokku config vars MUST be set
   * DATABASE_URL
-  * DOKKU_LETSENCRYPT_EMAIL: graham@mcintire.me
+  * DOKKU_LETSENCRYPT_EMAIL: grahamREMOVEME@mcintireREMOVE.me
   * HOSTNAME:                aprs.me
   * RABBITMQ_URL
   * SECRET_KEY_BASE
