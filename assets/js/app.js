@@ -93,7 +93,8 @@ if ($('#map').length !== 1) {
     }).sidebar('toggle');
 
   }).addTo(map);
-  $.getJSON('https://get.geojs.io/v1/ip/geo.js', function(data) {
+
+  $.getJSON('https://get.geojs.io/v1/ip/geo.js?callback=?', function(data) {
     map.setView([data.latitude, data.longitude], 10);
   });
 
