@@ -94,7 +94,7 @@ if ($('#map').length !== 1) {
 
   }).addTo(map);
 
-  $.getJSON('http://api.ipstack.com/?check&access_key=5baf65edb8a66d12508e5091c3cfa0a6&callback=?', function(data) {
+  $.getJSON('https://geoip-db.com/jsonp', function(data) {
     map.setView([data.latitude, data.longitude], 10);
   });
 
