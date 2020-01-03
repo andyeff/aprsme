@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Wait for postgres
 # This is necessary because postgres will become available, then restart itself

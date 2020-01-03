@@ -8,7 +8,7 @@ FROM elixir:1.9.4-alpine
 #RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
 #RUN apt install -y nodejs
 #RUN npm install -g yarn
-RUN apk add --update nodejs nodejs-npm git
+RUN apk add --update nodejs nodejs-npm git bash
 
 # Install Hex + Rebar
 RUN mix do local.hex --force, local.rebar --force
