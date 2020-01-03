@@ -7,5 +7,7 @@
 # Run migrations
 mix ecto.migrate
 
+mix phx.digest
+
 # Run the server
 mix phx.server

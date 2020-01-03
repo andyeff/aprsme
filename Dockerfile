@@ -37,7 +37,6 @@ WORKDIR /app/assets
 RUN ["yarn", "install"]
 
 WORKDIR /app
-RUN mix phx.digest
 
 # Wait for rabbit to become available before starting
 CMD /app/wait-for-it.sh rabbitmq:5672 -- /app/start.sh

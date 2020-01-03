@@ -51,7 +51,7 @@ defmodule Aprsme.Mixfile do
       {:geo, "~> 3.0"},
       {:geo_postgis, "~> 3.3.1"},
       {:scrivener_ecto, "~> 2.0.0"},
-      {:scrivener_html, "~> 1.7.1", git: "https://github.com/nazarsh/scrivener_html.git"},
+      {:scrivener_html, "~> 1.8"},
       {:quantum, "~> 2.3"},
     ]
   end
