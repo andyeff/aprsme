@@ -3,8 +3,6 @@ defmodule AprsmeWeb.Endpoint do
 
   socket("/socket", AprsmeWeb.UserSocket)
 
-  # Serve at "/" the static files from "priv/static" directory.
-  #
   # You should set gzip to true if you are running phoenix.digest
   # when deploying your static files in production.
   plug(Plug.Static,
