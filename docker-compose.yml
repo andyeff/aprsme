@@ -16,6 +16,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    networks:
+      - app-tier
     environment:
       - HOSTNAME=aprs.me
       - SECRET_KEY_BASE=hZN8qjZYwwI2rIXtXwbCJoFl/xxxW/VSi+4Fd/ZvP4XAJiLUdKG86dF9Pu0tnrMm
@@ -59,6 +61,8 @@ services:
       - POSTGRES_PASSWORD=2LRfvZdwWshXUFXFEJvBkegd
     volumes:
       - ./postgres/data:/var/lib/postgresql/data
+    networks:
+      - app-tier
 
   # certbot:
   #   image: certbot/certbot
