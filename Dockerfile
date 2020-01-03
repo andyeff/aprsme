@@ -6,8 +6,9 @@ RUN apt update
 RUN apt install -y curl git
 
 # Install nodejs
-RUN curl -sL https://deb.nodesource.com/setup_11.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
 RUN apt install -y nodejs
+RUN npm install -g yarn
 
 # Copy in files
 COPY assets /app/assets/
@@ -37,7 +38,7 @@ RUN ["mix", "compile"]
 
 # Build assets
 WORKDIR /app/assets
-RUN ["npm", "install"]
+RUN ["yarn", "install"]
 
 # Wait for postgres to become available before starting
 CMD ["/app/wait-for-it.sh", "postgres:5432", "/app/start.sh"]
