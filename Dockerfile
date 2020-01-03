@@ -36,5 +36,7 @@ RUN mix deps.compile
 WORKDIR /app/assets
 RUN ["yarn", "install"]
 
+WORKDIR /app
+
 # Wait for postgres to become available before starting
 CMD /app/wait-for-it.sh postgres:5432 -- /app/start.sh

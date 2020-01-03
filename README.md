@@ -4,30 +4,11 @@
 
 # Configuration
 
-## NEW: Use RabbitMQ and aprs_slurp with docker-compose:
+## Use RabbitMQ and aprs_slurp with docker-compose:
     $ docker-compose up
 
 You can then view the RabbitMQ admin at http://localhost:15672/
 The default bitnami username and password are in docker-compose.yml
-
-## OLD: (rabbitMQ and aprs_slurp run locally)
-
-    $ brew install rabbitmq
-
-### Start RabbitMQ:
-
-    $ brew services start rabbitmq
-
-### Configure RabbitMQ
-
-Create the aprs vhost:
-
-    $ rabbitmq-plugins enable rabbitmq_management
-    $ rabbitmqadmin declare vhost name=aprs
-
-You may need to curl http://localhost:15672/cli/rabbitmqadmin and add it in /usr/local/bin, and chmod +x the file to get access to it. Recommended to add yourself to the rabbitmq group, and change the ownership over to that group.
-
-Alternatively, open the RabbitMQ admin interface at http://localhost:15672/#/vhosts, and add a vhost named "aprs"
 
 ## Install dependencies:
 
@@ -44,7 +25,6 @@ Alternatively, open the RabbitMQ admin interface at http://localhost:15672/#/vho
 ## Seed the database and create an admin user:
 
     $ mix run priv/repo/seeds.exs
-
 
 Then navigate to <a href="http://127.0.0.1:4000/">http://127.0.0.1:4000/</a> and you should see the messages coming in via websocket.
 

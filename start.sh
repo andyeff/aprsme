@@ -2,7 +2,7 @@
 
 # Wait for postgres
 # This is necessary because postgres will become available, then restart itself
-sleep 10
+#sleep 10
 
 # Run migrations
 mix ecto.migrate

@@ -6,9 +6,9 @@ networks:
 
 services:
   app:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: aprsme/app:latest
     container_name: aprsme-app
     restart: always
@@ -16,6 +16,11 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      - HOSTNAME=aprs.me
+      - SECRET_KEY_BASE=hZN8qjZYwwI2rIXtXwbCJoFl/xxxW/VSi+4Fd/ZvP4XAJiLUdKG86dF9Pu0tnrMm
+      - DATABASE_URL=postgresql://postgres:2LRfvZdwWshXUFXFEJvBkegd@localhost/aprsme
+
   rabbitmq:
     image: 'bitnami/rabbitmq:latest'
     restart: always
@@ -44,12 +49,13 @@ services:
       - app-tier
 
   postgres:
-    image: 'mdillon/postgis:10'
+    image: 'mdillon/postgis:11-alpine'
     restart: always
     ports:
       - 25432:5432
     environment:
       - POSTGRES_DB=aprsme
+      - POSTGRES_PASSWORD=2LRfvZdwWshXUFXFEJvBkegd
     volumes:
       - ./postgres/data:/var/lib/postgresql/data
 
