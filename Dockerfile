@@ -37,6 +37,7 @@ WORKDIR /app/assets
 RUN ["yarn", "install"]
 
 WORKDIR /app
+RUN mix phx.digest
 
 # Wait for postgres to become available before starting
 CMD /app/wait-for-it.sh postgres:5432 -- /app/start.sh
