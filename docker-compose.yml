@@ -23,6 +23,10 @@ services:
       - SECRET_KEY_BASE=hZN8qjZYwwI2rIXtXwbCJoFl/xxxW/VSi+4Fd/ZvP4XAJiLUdKG86dF9Pu0tnrMm
       - DATABASE_URL=postgresql://postgres:2LRfvZdwWshXUFXFEJvBkegd@postgres/aprsme
       - RABBITMQ_URL=amqp://user:bitnami@rabbitmq:5672/aprs
+    depends_on:
+      - 'rabbitmq'
+      - 'postgres'
+      - 'aprs_slurp'
 
   rabbitmq:
     image: 'bitnami/rabbitmq:latest'

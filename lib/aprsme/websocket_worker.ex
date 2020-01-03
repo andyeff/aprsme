@@ -28,7 +28,7 @@ defmodule Aprsme.WebsocketWorker do
       AMQP.Exchange.declare(channel, @source_exchange_name, :topic)
 
       log("Declaring queue #{@queue_name}")
-      {:ok, _queue} = AMQP.Queue.declare(channel, @queue_name, durable: false)
+      {:ok, _queue} = AMQP.Queue.declare(channel, @queue_name)
 
       log("Binding #{@queue_name} to source #{@source_exchange_name}")
       :ok = AMQP.Queue.bind(channel, @queue_name, @source_exchange_name, routing_key: "#")

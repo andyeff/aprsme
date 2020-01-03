@@ -27,7 +27,7 @@ defmodule Aprsme.ArchiveWorker do
     {:ok, channel} = AMQP.Channel.open(connection)
 
     log("Declaring queue #{@archive_queue_name}")
-    {:ok, _queue} = AMQP.Queue.declare(channel, @archive_queue_name, durable: true)
+    {:ok, _queue} = AMQP.Queue.declare(channel, @archive_queue_name)
 
     log("Binding #{@archive_queue_name} to source #{@source_exchange_name}")
     :ok = AMQP.Queue.bind(channel, @archive_queue_name, @source_exchange_name, routing_key: "#")
