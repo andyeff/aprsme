@@ -39,5 +39,5 @@ RUN ["yarn", "install"]
 WORKDIR /app
 RUN mix phx.digest
 
-# Wait for postgres to become available before starting
-CMD /app/wait-for-it.sh postgres:5432 -- /app/start.sh
+# Wait for rabbit to become available before starting
+CMD /app/wait-for-it.sh rabbitmq:5672 -- /app/start.sh
