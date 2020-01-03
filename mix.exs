@@ -5,7 +5,7 @@ defmodule Aprsme.Mixfile do
     [
       app: :aprsme,
       version: "0.0.1",
-      elixir: "~> 1.4",
+      elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -33,10 +33,10 @@ defmodule Aprsme.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.4.0"},
+      {:phoenix, "~> 1.4.11"},
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_ecto, "~> 4.0"},
-      {:ecto_sql, "~> 3.0"},
+      {:ecto_sql, "~> 3.1"},
       {:postgrex, ">= 0.0.0"},
       {:instream, "~> 0.22.0"},
       {:phoenix_html, "~> 2.11"},
@@ -44,7 +44,6 @@ defmodule Aprsme.Mixfile do
       {:gettext, "~> 0.11"},
       {:plug_cowboy, "~> 2.0"},
       {:jason, "~> 1.1"},
-      # non-phoenix deps added after here..
       {:amqp, "~> 1.1"},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:coveralls, "~> 2.0", only: [:dev, :test], runtime: false},
@@ -67,8 +66,6 @@ defmodule Aprsme.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "ecto.migrate": ["ecto.migrate", "ecto.dump"],
-      "ecto.rollback": ["ecto.rollback", "ecto.dump"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
