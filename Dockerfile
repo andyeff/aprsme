@@ -1,5 +1,4 @@
 FROM elixir:1.9.4-slim
-MAINTAINER aprsme
 
 # Ensure package list is up to date
 RUN apt update
@@ -15,8 +14,7 @@ COPY assets /app/assets/
 COPY config /app/config/
 COPY lib /app/lib/
 COPY priv /app/priv/
-COPY mix.exs /app/
-COPY mix.lock /app/
+COPY mix* /app/
 COPY start.sh /app/
 COPY wait-for-it.sh /app/
 
@@ -41,4 +39,4 @@ WORKDIR /app/assets
 RUN ["yarn", "install"]
 
 # Wait for postgres to become available before starting
-CMD /app/wait-for-it.sh postgres:5432 /app/start.sh
+CMD /app/wait-for-it.sh postgres:5432 -- /app/start.sh
