@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Wait for postgres
 # This is necessary because postgres will become available, then restart itself
@@ -6,8 +6,6 @@
 
 # Run migrations
 mix ecto.migrate
-
-mix phx.digest
 
 # Run the server
 mix phx.server

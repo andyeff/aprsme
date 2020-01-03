@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.css">
 
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/components.css") %>">
   </head>
 
   <body>

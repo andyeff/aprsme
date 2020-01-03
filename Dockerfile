@@ -1,13 +1,14 @@
-FROM elixir:1.9.4-slim
+FROM elixir:1.9.4-alpine
 
 # Ensure package list is up to date
-RUN apt update
-RUN apt install -y curl git
+#RUN apt update
+#RUN apt install -y curl git
 
 # Install nodejs
-RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
-RUN apt install -y nodejs
-RUN npm install -g yarn
+#RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
+#RUN apt install -y nodejs
+#RUN npm install -g yarn
+RUN apk add --update nodejs nodejs-npm git
 
 # Install Hex + Rebar
 RUN mix do local.hex --force, local.rebar --force
@@ -34,7 +35,8 @@ RUN mix deps.compile
 
 # Build assets
 WORKDIR /app/assets
-RUN ["yarn", "install"]
+#RUN npm install && ./node_modules/webpack/bin/webpack.js --mode production
+#RUN mix phx.digest
 
 WORKDIR /app
 

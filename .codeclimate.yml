@@ -1,5 +1,0 @@
-engines:
-  credo:
-    enabled: true
-    strict: true
-    all: true
