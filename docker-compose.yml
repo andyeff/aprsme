@@ -65,7 +65,8 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 1800 --cleanup true aprsme-app
+    #command: --interval 1800 --cleanup true aprsme-app
+    command: --interval 60 --cleanup true aprsme-app
 
 volumes:
   storage:

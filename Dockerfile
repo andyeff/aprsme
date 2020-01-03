@@ -9,12 +9,16 @@ RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
 RUN apt install -y nodejs
 RUN npm install -g yarn
 
+# Install Hex + Rebar
+RUN mix do local.hex --force, local.rebar --force
+
 # Copy in files
 COPY assets /app/assets/
 COPY config /app/config/
 COPY lib /app/lib/
 COPY priv /app/priv/
-COPY mix* /app/
+COPY mix.exs /app/
+COPY mix.* /app/
 COPY start.sh /app/
 COPY wait-for-it.sh /app/
 
@@ -25,14 +29,8 @@ WORKDIR /app
 ENV MIX_ENV=prod
 ENV PORT=80
 
-# Install hex
-RUN ["mix", "local.hex", "--force"]
-# Install rebar
-RUN ["mix", "local.rebar", "--force"]
-# Install dependencies
-RUN ["mix", "deps.get"]
-# Compile
-RUN ["mix", "compile"]
+RUN mix deps.get --only prod
+RUN mix deps.compile
 
 # Build assets
 WORKDIR /app/assets
