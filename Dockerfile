@@ -1,8 +1,9 @@
-FROM elixir:1.8.0
+FROM elixir:1.9.4-slim
 MAINTAINER aprsme
 
 # Ensure package list is up to date
 RUN apt update
+RUN apt install -y curl git
 
 # Install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_11.x | bash -

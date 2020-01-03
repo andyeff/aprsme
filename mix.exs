@@ -20,7 +20,7 @@ defmodule Aprsme.Mixfile do
   def application do
     [
       mod: {Aprsme.Application, []},
-      extra_applications: [:logger, :runtime_tools, :appsignal]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
@@ -38,6 +38,7 @@ defmodule Aprsme.Mixfile do
       {:phoenix_ecto, "~> 4.0"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
+      {:instream, "~> 0.22.0"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
@@ -49,11 +50,10 @@ defmodule Aprsme.Mixfile do
       {:coveralls, "~> 2.0", only: [:dev, :test], runtime: false},
       {:timex, "~> 3.4"},
       {:geo, "~> 3.0"},
-      {:geo_postgis, "~> 3.0"},
+      {:geo_postgis, "~> 3.3.1"},
       {:scrivener_ecto, "~> 2.0.0"},
       {:scrivener_html, "~> 1.7.1", git: "https://github.com/nazarsh/scrivener_html.git"},
       {:quantum, "~> 2.3"},
-      {:appsignal, "~> 1.0"}
     ]
   end
 
