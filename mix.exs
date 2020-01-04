@@ -45,13 +45,13 @@ defmodule Aprsme.Mixfile do
       {:plug_cowboy, "~> 2.0"},
       {:jason, "~> 1.1"},
       {:amqp, "~> 1.1"},
-      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.1.5", only: [:dev, :test], runtime: false},
       {:coveralls, "~> 2.0", only: [:dev, :test], runtime: false},
       {:timex, "~> 3.4"},
       {:geo, "~> 3.0"},
       {:geo_postgis, "~> 3.3.1"},
-      {:scrivener_ecto, "~> 2.0.0"},
-      {:scrivener_html, "~> 1.8"},
+      {:scrivener_ecto, "~> 2.2.0"},
+      {:scrivener_html, "~> 1.8.1"},
       {:quantum, "~> 2.3"},
     ]
   end

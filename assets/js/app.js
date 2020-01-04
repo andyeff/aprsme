@@ -19,7 +19,7 @@ import socket from "./socket";
 import mapboxAccessToken from './mapboxAccessToken';
 import Packet from "./packet";
 import symbols from "./symbols";
-import randomColor from "./randomColor";
+//import randomColor from "./randomColor";
 
 // common to all pages
 $(".dropdown").dropdown();
