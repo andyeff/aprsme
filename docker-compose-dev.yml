@@ -1,0 +1,50 @@
+version: '3'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  rabbitmq:
+    image: 'bitnami/rabbitmq:latest'
+    restart: always
+    environment:
+      - RABBITMQ_VHOST=aprs
+    ports:
+      - 15672:15672
+      - 5672:5672
+    networks:
+      - app-tier
+
+  aprs_slurp:
+    depends_on:
+      - 'rabbitmq'
+    image: 'aprsme/aprs_slurp:latest'
+    restart: always
+    environment:
+      - APRS_USERNAME=APRSME-99
+      - APRS_SERVER=g.vntx.net:10152
+      - RABBITMQ_USERNAME=user
+      - RABBITMQ_PASSWORD=bitnami
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_VHOST=aprs
+      - RABBITMQ_HOST=rabbitmq
+    networks:
+      - app-tier
+
+  postgres:
+    image: 'mdillon/postgis:11-alpine'
+    restart: always
+    ports:
+      - 25432:5432
+    environment:
+      - POSTGRES_DB=aprsme_dev
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+    networks:
+      - app-tier
+
+volumes:
+  storage:
+    driver: local

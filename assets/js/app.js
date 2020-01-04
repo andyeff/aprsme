@@ -19,10 +19,12 @@ import socket from "./socket";
 import mapboxAccessToken from './mapboxAccessToken';
 import Packet from "./packet";
 import symbols from "./symbols";
-//import randomColor from "./randomColor";
+import randomColor from "./randomColor";
 
 // common to all pages
 $(".dropdown").dropdown();
+
+console.log("APRS.me by W5ISP & N0RUA");
 
 // FIXME: Break this out into a separate .js entrypoint
 // that is only served to logged-in users.
@@ -47,7 +49,7 @@ if ($('#map').length !== 1) {
     maxZoom: MAX_ZOOM,
     worldCopyJump: true,
     keyboard: true
-  }).setView([44.94, -93.17], 10);
+  }).setView([33.035359, -96.686845], 10);
 
   let resizeMap = () => {
     console.log("resizeMap");
@@ -111,6 +113,71 @@ if ($('#map').length !== 1) {
 
   // END map stuff
 
+  let mapMarkerService = {
+    updateOrCreateMarker: (pkt) => {
+      let callsign = pkt.getDisplayName();
+      let lat = pkt.latitude;
+      let lng = pkt.longitude;
+      let packetPos = pkt.getLatLng();
+
+      let marker = data.markersByCallsign[callsign];
+      let symbol_class = "";
+      if (symbols.symbols[pkt.symboltable + pkt.symbolcode] && symbols.symbols[pkt.symboltable + pkt.symbolcode].tocall) {
+        symbol_class = symbols.symbols[pkt.symboltable + pkt.symbolcode].tocall
+      } else {
+        console.log("%c Invalid Symbol: " + pkt.symboltable + pkt.symbolcode, "background: #000; color: #fff");
+      }
+
+      if (marker) {
+        const oldLatLng = marker.getLatLng();
+
+        if (pkt.isDifferentLocation(oldLatLng)) {
+          let newPos = pkt.getLatLng();
+
+          if (!pkt.isObject()) {
+            let polyline = data.polylinesByCallsign[callsign];
+            if (polyline) {
+              polyline.addLatLng(packetPos);
+            }
+          }
+
+          marker.setLatLng(packetPos);
+          // heat.addLatLng(newPos);
+
+        } else {
+          //console.log("  -> location same, skipping");
+        }
+      } else {
+        //console.log("[new]");
+
+        let icon = new L.DivIcon({
+          html: `
+            <div class="aprs-map-symbol-wrapper">
+              <div class="aprs-icon-symbol map ${symbol_class}">
+              </div>
+              <span class="aprs-marker-callsign">${callsign}</span>
+            </div>
+          `,
+          className: 'aprs-icon-callsign',
+          iconSize : L.point(100, 18),
+          iconAnchor: L.point(0, 0)
+        });
+
+        marker = new L.Marker(packetPos, {icon: icon});
+        markerGroup.addLayer(marker);
+
+        //Vue.set(data.markersByCallsign, callsign, marker);
+        data.recentCallsigns.push(callsign);
+
+        if (!pkt.isObject()) {
+          let polyline = L.polyline(packetPos, {color: randomColor(), opacity: 0.8, weight: 4, smoothFactor: 1.0}).addTo(map);
+          //Vue.set(data.polylinesByCallsign, callsign, polyline)
+        }
+      }
+
+      return marker;
+    }
+  };
 
   let APRS = {
 
