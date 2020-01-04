@@ -15,7 +15,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :aprsme, AprsmeWeb.Endpoint,
   load_from_system_env: true,
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  cache_static_manifest: "priv/static/manifest.json"
 
 # Do not print debug messages in production
 config :logger, level: :info
