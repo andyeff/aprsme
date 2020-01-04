@@ -6,9 +6,9 @@ networks:
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     image: aprsme/app:latest
     container_name: aprsme-app
     restart: always
