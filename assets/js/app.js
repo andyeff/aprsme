@@ -19,7 +19,6 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 import socket from "./socket";
 import mapboxAccessToken from './mapboxAccessToken';
-import StationList from "./components/station_list.vue";
 import Packet from "./packet";
 import symbols from "./symbols";
 import randomColor from "./randomColor";
@@ -180,50 +179,6 @@ if ($('#map').length !== 1) {
       return marker;
     }
   };
-
-  let vm = new Vue({
-    el: '#app',
-    data: data,
-    components: {
-      'station-list': StationList,
-    },
-    computed: {
-      stationsByCallsign: function () {
-        return Object.keys(data.markersByCallsign);
-      },
-      zoomedOutTooFar: function () {
-        // This need to be coordinated with
-        // The min_zoom_level in aprs_channel.ex
-        return data.mapZoom < 9;
-      }
-    },
-    methods: {
-      focusMarker: function (callsign) {
-        const marker = data.markersByCallsign[callsign];
-
-        if (marker) {
-          console.log("marker latlng:", marker.getLatLng());
-          map.setView(marker.getLatLng());
-          marker.openPopup();
-        }
-      }
-    },
-    template: `
-      <div id="vueApp">
-        <div class="ui container">
-          <div v-if="zoomedOutTooFar" class="ui blue icon tiny message">
-            <i class="icon info circle"></i>
-            <div class="content">
-              <p>Zoom in to see live positions.</p>
-            </div>
-          </div>
-
-          <station-list :stations="recentCallsigns" :focusMarker="focusMarker" />
-
-        </div> <!-- container -->
-      </div>
-    `,
-  });
 
   let APRS = {
 
