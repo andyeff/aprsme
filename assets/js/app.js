@@ -73,7 +73,7 @@ if ($('#map').length !== 1) {
     resizeMap();
   }).trigger('resize');
 
-  L.easyButton('<i class="ui large icon location arrow"></i>', function(btn, map) {
+  L.easyButton('<i class="ui large icon location arrow"></i>', function (btn, map) {
     map.locate({
       maxZoom: 10,
       setView: true,
@@ -81,7 +81,7 @@ if ($('#map').length !== 1) {
     });
   }).addTo(map);
 
-  L.easyButton('<i class="ui large icon angle double right"></i>', function(btn, map) {
+  L.easyButton('<i class="ui large icon angle double right"></i>', function (btn, map) {
     $('#map-sidebar').sidebar({
       dimPage: false,
       closable: false,
@@ -94,7 +94,7 @@ if ($('#map').length !== 1) {
 
   }).addTo(map);
 
-  $.getJSON('https://get.geojs.io/v1/ip/geo.js?callback=?', function(data) {
+  $.getJSON('https://get.geojs.io/v1/ip/geo.js?callback=?', function (data) {
     map.setView([data.latitude, data.longitude], 10);
   });
 
@@ -161,18 +161,18 @@ if ($('#map').length !== 1) {
             </div>
           `,
           className: 'aprs-icon-callsign',
-          iconSize : L.point(100, 18),
+          iconSize: L.point(100, 18),
           iconAnchor: L.point(0, 0)
         });
 
-        marker = new L.Marker(packetPos, {icon: icon});
+        marker = new L.Marker(packetPos, { icon: icon });
         markerGroup.addLayer(marker);
 
         Vue.set(data.markersByCallsign, callsign, marker);
         data.recentCallsigns.push(callsign);
 
         if (!pkt.isObject()) {
-          let polyline = L.polyline(packetPos, {color: randomColor(), opacity: 0.8, weight: 4, smoothFactor: 1.0}).addTo(map);
+          let polyline = L.polyline(packetPos, { color: randomColor(), opacity: 0.8, weight: 4, smoothFactor: 1.0 }).addTo(map);
           Vue.set(data.polylinesByCallsign, callsign, polyline)
         }
       }
@@ -188,21 +188,21 @@ if ($('#map').length !== 1) {
       'station-list': StationList,
     },
     computed: {
-      stationsByCallsign: function() {
+      stationsByCallsign: function () {
         return Object.keys(data.markersByCallsign);
       },
-      zoomedOutTooFar: function() {
+      zoomedOutTooFar: function () {
         // This need to be coordinated with
         // The min_zoom_level in aprs_channel.ex
         return data.mapZoom < 9;
       }
     },
     methods: {
-      focusMarker: function(callsign) {
+      focusMarker: function (callsign) {
         const marker = data.markersByCallsign[callsign];
 
         if (marker) {
-          console.log("marker latlng:", marker.getLatLng() );
+          console.log("marker latlng:", marker.getLatLng());
           map.setView(marker.getLatLng());
           marker.openPopup();
         }
@@ -324,7 +324,7 @@ if ($('#map').length !== 1) {
           console.log("Join failed because:", reason);
         });
 
-      map.on('zoomend', function(e) {
+      map.on('zoomend', function (e) {
         self._refreshPositions(map, channel);
 
         let zoom = map.getZoom();
@@ -345,25 +345,25 @@ if ($('#map').length !== 1) {
 
       });
 
-      map.on('dragend', function(e) {
+      map.on('dragend', function (e) {
         self._refreshPositions(map, channel);
       });
     },
 
-    _refreshPositions: function(map, channel) {
+    _refreshPositions: function (map, channel) {
       this._clearAllStations(map);
       this._sendMapBounds(map, channel);
     },
 
-    _clearAllStations: function(map) {
+    _clearAllStations: function (map) {
       this.__clearPolylines(map);
 
       data.markersByCallsign = {};
       data.recentCallsigns = [];
       markerGroup.clearLayers();
     },
-    
-    __clearPolylines: function(map) {
+
+    __clearPolylines: function (map) {
       for (var callsign in data.polylinesByCallsign) {
         let polyline = data.polylinesByCallsign[callsign];
         map.removeLayer(polyline);
