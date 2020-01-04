@@ -12,7 +12,6 @@ services:
     image: aprsme/app:latest
     container_name: aprsme-app
     restart: always
-    tty: true
     ports:
       - "80:80"
       - "443:443"
