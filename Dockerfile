@@ -26,8 +26,7 @@ RUN mix do deps.get --only $MIX_ENV, deps.compile, compile
 
 # Build assets
 WORKDIR /app/assets
-#RUN npm install && ./node_modules/webpack/bin/webpack.js --mode production
-RUN npm install
+RUN npm install && ./node_modules/webpack/bin/webpack.js --mode production
 
 WORKDIR /app
 RUN npm run deploy --prefix ./assets
