@@ -18,7 +18,9 @@ defmodule Aprsme.Application do
       supervisor(AprsmeWeb.Endpoint, []),
 
       # Supervision tree for incoming packets from RabbitMQ
-      supervisor(Aprsme.IncomingPacketSupervisor, [])
+      supervisor(Aprsme.IncomingPacketSupervisor, []),
+
+      Aprsme.Scheduler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

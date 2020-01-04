@@ -1,14 +1,14 @@
 # APRSme
 
-[![Build Status](https://travis-ci.org/aprsme/aprsme.svg?branch=master)](https://travis-ci.org/aprsme/aprsme)
+## Local Development
 
-# Configuration
-
-## Use RabbitMQ and aprs_slurp with docker-compose:
-    $ docker-compose up
+## Start dependencies with docker-compose (will start rabbitmq, aprs injest, and postgresql.)
+    $ docker-compose -f docker-compose-dev.yml up
 
 You can then view the RabbitMQ admin at http://localhost:15672/
 The default bitnami username and password are in docker-compose.yml
+
+## In another terminal, run the actual app
 
 ## Install dependencies:
 
@@ -85,3 +85,5 @@ Retrieve publish & deliver rates for the aprs:archive queue:
   * RABBITMQ_URL
   * SECRET_KEY_BASE
 
+## Thanks
+  * APRS symbols from https://github.com/smarek/aprs-symbols

@@ -1,7 +1,7 @@
 // We need to import the CSS so that webpack will load it.
 // The MiniCssExtractPlugin is used to separate it out into
 // its own CSS file.
-import css from "../css/app.css"
+import css from "../css/app.scss"
 
 // webpack automatically bundles all modules in your
 // entry points. Those entry points can be configured
@@ -18,13 +18,13 @@ import "phoenix_html"
 import socket from "./socket";
 import mapboxAccessToken from './mapboxAccessToken';
 import Packet from "./packet";
-import symbols from "./symbols";
 import randomColor from "./randomColor";
+import symbols from "./symbols";
 
 // common to all pages
 $(".dropdown").dropdown();
 
-console.log("APRS.me by W5ISP & N0RUA");
+console.log("APRS.me by W5ISP, N0RUA, and VA7YK");
 
 // FIXME: Break this out into a separate .js entrypoint
 // that is only served to logged-in users.
@@ -49,7 +49,8 @@ if ($('#map').length !== 1) {
     maxZoom: MAX_ZOOM,
     worldCopyJump: true,
     keyboard: true
-  }).setView([33.035359, -96.686845], 10);
+  }).setView([33.035359, -96.686845], 14);
+  //}).setView([33.035359, -96.686845], 10);
 
   let resizeMap = () => {
     console.log("resizeMap");
@@ -121,12 +122,14 @@ if ($('#map').length !== 1) {
       let packetPos = pkt.getLatLng();
 
       let marker = data.markersByCallsign[callsign];
-      let symbol_class = "";
-      if (symbols.symbols[pkt.symboltable + pkt.symbolcode] && symbols.symbols[pkt.symboltable + pkt.symbolcode].tocall) {
-        symbol_class = symbols.symbols[pkt.symboltable + pkt.symbolcode].tocall
-      } else {
-        console.log("%c Invalid Symbol: " + pkt.symboltable + pkt.symbolcode, "background: #000; color: #fff");
-      }
+      let symbol_icon = symbols(pkt.symboltable + pkt.symbolcode);
+
+//      let symbol_class = "";
+//      if (symbols.symbols[pkt.symboltable + pkt.symbolcode] && symbols.symbols[pkt.symboltable + pkt.symbolcode].tocall) {
+//        symbol_class = symbols.symbols[pkt.symboltable + pkt.symbolcode].tocall
+//      } else {
+//        console.log("%c Invalid Symbol: " + pkt.symboltable + pkt.symbolcode, "background: #000; color: #fff");
+//      }
 
       if (marker) {
         const oldLatLng = marker.getLatLng();
@@ -153,9 +156,7 @@ if ($('#map').length !== 1) {
         let icon = new L.DivIcon({
           html: `
             <div class="aprs-map-symbol-wrapper">
-              <div class="aprs-icon-symbol map ${symbol_class}">
-              </div>
-              <span class="aprs-marker-callsign">${callsign}</span>
+              <div class="aprs-icon-symbol map">${symbol_icon}<span class="aprs-marker-callsign">${callsign}</span></div>
             </div>
           `,
           className: 'aprs-icon-callsign',
@@ -166,12 +167,10 @@ if ($('#map').length !== 1) {
         marker = new L.Marker(packetPos, {icon: icon});
         markerGroup.addLayer(marker);
 
-        //Vue.set(data.markersByCallsign, callsign, marker);
         data.recentCallsigns.push(callsign);
 
         if (!pkt.isObject()) {
           let polyline = L.polyline(packetPos, {color: randomColor(), opacity: 0.8, weight: 4, smoothFactor: 1.0}).addTo(map);
-          //Vue.set(data.polylinesByCallsign, callsign, polyline)
         }
       }
 
@@ -196,7 +195,7 @@ if ($('#map').length !== 1) {
 
       // handle incoming APRS packets
       channel.on("aprs:position", (data) => {
-        console.log("aprs:position", data)
+        //console.log("aprs:position", data)
         let pkt = new Packet(JSON.parse(data.payload));
 
         if (pkt.hasPosition()) {
@@ -204,20 +203,12 @@ if ($('#map').length !== 1) {
             let call = pkt.getDisplayName();
 
             let marker = mapMarkerService.updateOrCreateMarker(pkt);
-            let symbol_class = "";
-
-            let foundSymbol = symbols.symbols[pkt.getSymbol()];
-
-            if (foundSymbol && foundSymbol.tocall) {
-              symbol_class = foundSymbol.tocall;
-            } else {
-              //console.log("%c Unknown Symbol: " + pkt.getSymbol(), "background: #000; color: #fff");
-            }
+            let symbol_icon = symbols(pkt.symboltable + pkt.symbolcode);
 
             let popupText = `
               <div class="ui padded grid">
                 <div class="two wide column">
-                  <span class="aprs-symbol aprs-icon-symbol ${symbol_class}">&nbsp;</span>
+                  <span class="aprs-symbol aprs-icon-symbol">${symbol_icon} ${pkt.symboltable + pkt.symbolcode}</span>
                 </div>
                 <div class="ten wide column">
                   <h3>
@@ -266,7 +257,6 @@ if ($('#map').length !== 1) {
             console.log("Unhandled packet type:", pkt.type);
           }
         }
-
       });
 
       console.log("About to join() channel");

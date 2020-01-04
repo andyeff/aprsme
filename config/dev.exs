@@ -65,4 +65,5 @@ config :aprsme, Aprsme.Repo,
   database: "aprsme_dev",
   hostname: "localhost",
   port: 25432,
-  pool_size: 10
+  pool_size: 10,
+  timeout: 60000

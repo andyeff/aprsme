@@ -40,7 +40,12 @@ config :aprsme, Aprsme.Scheduler,
 
 config :aprsme,
   purge_packet_count: System.get_env("PACKET_PURGE_COUNT") || 1,
-  purge_packet_interval: System.get_env("PACKET_PURGE_INTERVAL") || "day"
+  purge_packet_interval: System.get_env("PACKET_PURGE_INTERVAL") || "hour"
+
+config :aprsme, Aprsme.Scheduler,
+  jobs: [
+    {"*/3 * * * *", {Aprsme.PurgePacketWorker, :run, []}},
+  ]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
