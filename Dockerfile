@@ -30,8 +30,7 @@ WORKDIR /app
 ENV MIX_ENV=prod
 ENV PORT=80
 
-RUN mix deps.get --only prod
-RUN mix deps.compile
+RUN mix do deps.get --only $MIX_ENV, deps.compile, compile
 
 # Build assets
 WORKDIR /app/assets
