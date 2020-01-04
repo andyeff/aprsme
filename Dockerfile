@@ -36,9 +36,11 @@ RUN mix deps.compile
 # Build assets
 WORKDIR /app/assets
 #RUN npm install && ./node_modules/webpack/bin/webpack.js --mode production
-#RUN mix phx.digest
+RUN npm install
 
 WORKDIR /app
+RUN npm run deploy --prefix ./assets
+RUN mix phx.digest
 
 # Wait for rabbit to become available before starting
 CMD /app/wait-for-it.sh rabbitmq:5672 -- /app/start.sh
