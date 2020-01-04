@@ -1,13 +1,5 @@
 FROM elixir:1.9.4-alpine
 
-# Ensure package list is up to date
-#RUN apt update
-#RUN apt install -y curl git
-
-# Install nodejs
-#RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
-#RUN apt install -y nodejs
-#RUN npm install -g yarn
 RUN apk add --update nodejs nodejs-npm git bash
 
 # Install Hex + Rebar

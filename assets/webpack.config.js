@@ -23,9 +23,7 @@ module.exports = (env, options) => ({
     rules: [
       {
         test: /\.js$/,
-        exclude: [
-          /node_modules/,
-        ],
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader'
         }
@@ -33,7 +31,7 @@ module.exports = (env, options) => ({
       {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader']
-      },
+      }
     ]
   },
   plugins: [
