@@ -41,6 +41,9 @@ defmodule Aprsme.ArchiveWorker do
       log("#{__MODULE__}: Waiting for messages")
 
       {:noreply, state}
+    else
+      {:error, err} ->
+        IO.warn("Unable to connect to rabbitmq: #{err}")
     end
 
     {:noreply, state}
