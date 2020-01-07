@@ -23,7 +23,6 @@ defmodule AprsmeWeb do
       import Plug.Conn
       import AprsmeWeb.Router.Helpers
       import AprsmeWeb.Gettext
-
     end
   end
 

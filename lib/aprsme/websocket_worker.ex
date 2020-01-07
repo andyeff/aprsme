@@ -40,7 +40,6 @@ defmodule Aprsme.WebsocketWorker do
 
       {:noreply, state}
     end
-
   end
 
   # change to handle_info

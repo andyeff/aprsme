@@ -11,5 +11,4 @@ defmodule AprsmeWeb.PacketView do
       end
     end
   end
-
 end

@@ -52,7 +52,7 @@ defmodule Aprsme.Mixfile do
       {:geo_postgis, "~> 3.3.1"},
       {:scrivener_ecto, "~> 2.2.0"},
       {:scrivener_html, "~> 1.8.1"},
-      {:quantum, "~> 2.3"},
+      {:quantum, "~> 2.3"}
     ]
   end
 

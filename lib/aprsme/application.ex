@@ -19,7 +19,6 @@ defmodule Aprsme.Application do
 
       # Supervision tree for incoming packets from RabbitMQ
       supervisor(Aprsme.IncomingPacketSupervisor, []),
-
       Aprsme.Scheduler
     ]
 

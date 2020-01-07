@@ -5,7 +5,8 @@ defmodule AprsmeWeb.CallController do
   alias Aprsme.Aprs.Packet
 
   def show(conn, %{"id" => id} = params) do
-    page = Packet
+    page =
+      Packet
       |> Packet.recent_by_callsign(id)
       |> Repo.paginate(params)
 

@@ -44,7 +44,7 @@ config :aprsme,
 
 config :aprsme, Aprsme.Scheduler,
   jobs: [
-    {"*/3 * * * *", {Aprsme.PurgePacketWorker, :run, []}},
+    {"*/3 * * * *", {Aprsme.PurgePacketWorker, :run, []}}
   ]
 
 # Import environment specific config. This must remain at the bottom

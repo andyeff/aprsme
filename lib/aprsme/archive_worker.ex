@@ -23,19 +23,25 @@ defmodule Aprsme.ArchiveWorker do
 
   def handle_info(:connect, state) do
     Logger.info("#{__MODULE__}: Attempting to connect to RabbitMQ")
-    {:ok, connection} = AMQP.Connection.open(rabbitmq_url())
-    {:ok, channel} = AMQP.Channel.open(connection)
 
-    log("Declaring queue #{@archive_queue_name}")
-    {:ok, _queue} = AMQP.Queue.declare(channel, @archive_queue_name)
+    with {:ok, connection} <- AMQP.Connection.open(rabbitmq_url()),
+         {:ok, channel} <- AMQP.Channel.open(connection) do
+      log("Declaring exchange...")
+      AMQP.Exchange.declare(channel, @source_exchange_name, :topic)
 
-    log("Binding #{@archive_queue_name} to source #{@source_exchange_name}")
-    :ok = AMQP.Queue.bind(channel, @archive_queue_name, @source_exchange_name, routing_key: "#")
+      log("Declaring queue #{@archive_queue_name}")
+      {:ok, _queue} = AMQP.Queue.declare(channel, @archive_queue_name)
 
-    log("basic.consume...")
-    AMQP.Basic.consume(channel, @archive_queue_name, nil, no_ack: true)
+      log("Binding #{@archive_queue_name} to source #{@source_exchange_name}")
+      :ok = AMQP.Queue.bind(channel, @archive_queue_name, @source_exchange_name, routing_key: "#")
 
-    log("Wait_for_messages")
+      log("basic.consume...")
+      AMQP.Basic.consume(channel, @archive_queue_name, nil, no_ack: true)
+
+      log("#{__MODULE__}: Waiting for messages")
+
+      {:noreply, state}
+    end
 
     {:noreply, state}
   end

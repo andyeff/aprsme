@@ -10,7 +10,7 @@ defmodule Aprsme.IncomingPacketSupervisor do
   def init(_) do
     children = [
       worker(Aprsme.WebsocketWorker, []),
-      worker(Aprsme.ArchiveWorker, []),
+      worker(Aprsme.ArchiveWorker, [])
     ]
 
     opts = [strategy: :one_for_one]

@@ -5,10 +5,10 @@ defmodule AprsmeWeb.PacketController do
   alias Aprsme.Repo
 
   def index(conn, params) do
-    page = Packet
-      |> Packet.recent
+    page =
+      Packet
+      |> Packet.recent()
       |> Repo.paginate(params)
-
 
     render(conn, "index.html", page: page)
   end
