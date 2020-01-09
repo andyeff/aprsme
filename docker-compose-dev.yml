@@ -7,7 +7,6 @@ networks:
 services:
   rabbitmq:
     image: 'bitnami/rabbitmq:latest'
-    restart: always
     environment:
       - RABBITMQ_VHOST=aprs
     ports:
@@ -20,7 +19,6 @@ services:
     depends_on:
       - 'rabbitmq'
     image: 'aprsme/aprs_slurp:latest'
-    restart: always
     environment:
       - APRS_USERNAME=APRSME-99
       - APRS_SERVER=g.vntx.net:10152
@@ -34,7 +32,6 @@ services:
 
   postgres:
     image: 'mdillon/postgis:11-alpine'
-    restart: always
     ports:
       - 25432:5432
     environment:

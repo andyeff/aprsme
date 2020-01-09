@@ -20,7 +20,7 @@ defmodule Aprsme.Mixfile do
   def application do
     [
       mod: {Aprsme.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :retry]
     ]
   end
 
@@ -53,7 +53,7 @@ defmodule Aprsme.Mixfile do
       {:scrivener_ecto, "~> 2.2.0"},
       {:scrivener_html, "~> 1.8.1"},
       {:quantum, "~> 2.3"},
-      {:connection, "~> 1.0"}
+      {:retry, "~> 0.13.0"}
     ]
   end
 
