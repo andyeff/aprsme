@@ -53,7 +53,8 @@ defmodule Aprsme.Mixfile do
       {:scrivener_ecto, "~> 2.2.0"},
       {:scrivener_html, "~> 1.8.1"},
       {:quantum, "~> 2.3"},
-      {:retry, "~> 0.13.0"}
+      {:retry, "~> 0.13.0"},
+      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false}
     ]
   end
 

@@ -24,6 +24,7 @@ services:
       - DATABASE_URL=postgresql://postgres:2LRfvZdwWshXUFXFEJvBkegd@postgres/aprsme
       - ERL_CRASH_DUMP_BYTES=0
       - RABBITMQ_URL=amqp://user:bitnami@rabbitmq:5672/aprs
+      - PACKET_PURGE_COUNT=1
     depends_on:
       - 'rabbitmq'
       - 'postgres'
