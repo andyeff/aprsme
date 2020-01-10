@@ -5,11 +5,13 @@ defmodule Aprsme.WebsocketWorker do
   use GenServer
   require Logger
 
+  @spec start_link(any) :: :ignore | {:error, any} | {:ok, pid}
   def start_link(_args \\ []) do
     IO.puts("#{__MODULE__}.start_link()")
     GenServer.start_link(__MODULE__, [], name: :websocket_worker)
   end
 
+  @spec init(any) :: {:ok, any}
   def init(state \\ []) do
     Process.send_after(self(), :connect, 5000)
     {:ok, state}
@@ -45,7 +47,6 @@ defmodule Aprsme.WebsocketWorker do
     end
   end
 
-  # change to handle_info
   def handle_info({:basic_deliver, payload, _meta}, state) do
     AprsmeWeb.Endpoint.broadcast!("aprs:messages", "aprs:position", %{payload: payload})
 

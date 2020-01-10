@@ -17,6 +17,7 @@ defmodule AprsmeWeb do
   and import those modules here.
   """
 
+  @spec controller :: {:__block__, [], [{:import, [...], [...]} | {:use, [...], [...]}, ...]}
   def controller do
     quote do
       use Phoenix.Controller, namespace: AprsmeWeb
@@ -26,6 +27,7 @@ defmodule AprsmeWeb do
     end
   end
 
+  @spec view :: {:__block__, [], [{:import, [...], [...]} | {:use, [...], [...]}, ...]}
   def view do
     quote do
       use Phoenix.View,
@@ -48,6 +50,7 @@ defmodule AprsmeWeb do
     end
   end
 
+  @spec router :: {:__block__, [], [{:import, [...], [...]} | {:use, [...], [...]}, ...]}
   def router do
     quote do
       use Phoenix.Router
@@ -56,6 +59,7 @@ defmodule AprsmeWeb do
     end
   end
 
+  @spec channel :: {:__block__, [], [{:import, [...], [...]} | {:use, [...], [...]}, ...]}
   def channel do
     quote do
       use Phoenix.Channel

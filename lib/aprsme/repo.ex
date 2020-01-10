@@ -17,6 +17,7 @@ defmodule Aprsme.Repo do
     {:ok, Keyword.put(opts, :url, System.get_env("DATABASE_URL"))}
   end
 
+  @spec purge_old_packets! :: any
   def purge_old_packets! do
     purge_count = Application.fetch_env!(:aprsme, :purge_packet_count)
     purge_interval = Application.fetch_env!(:aprsme, :purge_packet_interval)
@@ -26,10 +27,12 @@ defmodule Aprsme.Repo do
     Packet |> Packet.older_than(purge_count, purge_interval) |> delete_all
   end
 
+  @spec packet_count :: any
   def packet_count do
     aggregate(Packet, :count, :id)
   end
 
+  @spec packets_through_bbox(map, map, integer) :: any
   def packets_through_bbox(ne, sw, age_in_minutes \\ 60) do
     callsigns =
       Packet

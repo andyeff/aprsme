@@ -11,12 +11,14 @@ defmodule Aprsme.Aprs.Packet do
 
   use Ecto.Schema
 
+  @spec recent(any) :: Ecto.Query.t()
   def recent(query) do
     from(q in query,
       order_by: [desc: q.inserted_at]
     )
   end
 
+  @spec recent_by_callsign(any, any) :: Ecto.Query.t()
   def recent_by_callsign(query, callsign) do
     from(q in query,
       select: q,
@@ -26,24 +28,28 @@ defmodule Aprsme.Aprs.Packet do
   end
 
   # See: https://hexdocs.pm/ecto/Ecto.Query.API.html#ago/2
+  @spec older_than(any, number | Decimal.t(), any) :: Ecto.Query.t()
   def older_than(query, purge_count \\ 1, purge_interval \\ "day") do
     from(q in query,
       where: q.inserted_at < ago(^purge_count, ^purge_interval)
     )
   end
 
+  @spec newer_than_n_minutes_ago(any, integer) :: Ecto.Query.t()
   def newer_than_n_minutes_ago(query, minutes_ago) do
     as_of_date = Timex.subtract(Timex.now(), Timex.Duration.from_minutes(minutes_ago))
 
     inserted_on_or_after(query, as_of_date)
   end
 
+  @spec for_callsigns(any, any) :: Ecto.Query.t()
   def for_callsigns(query, callsigns) do
     from(q in query,
       where: q.srccallsign in ^callsigns
     )
   end
 
+  @spec distinct_callsigns(any, map, map) :: Ecto.Query.t()
   def distinct_callsigns(query, ne, sw) do
     from(q in query,
       select: q.srccallsign,
@@ -52,18 +58,21 @@ defmodule Aprsme.Aprs.Packet do
     )
   end
 
+  @spec inserted_on_or_after(any, any) :: Ecto.Query.t()
   def inserted_on_or_after(query, as_of_date) do
     from(q in query,
       where: q.inserted_at >= ^as_of_date
     )
   end
 
+  @spec by_insertion_time(any) :: Ecto.Query.t()
   def by_insertion_time(query) do
     from(q in query,
       order_by: [asc: q.inserted_at]
     )
   end
 
+  @spec within_bbox(any, map, map) :: Ecto.Query.t()
   def within_bbox(query, ne, sw) do
     # select unique set of callsigns from all packets occurring within the bbox
     # then select all packets from those callsigns
@@ -134,6 +143,10 @@ defmodule Aprsme.Aprs.Packet do
     timestamps()
   end
 
+  @spec changeset(
+          {map, map} | %{:__struct__ => atom | %{__changeset__: map}, optional(atom) => any},
+          :invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}
+        ) :: Ecto.Changeset.t()
   def changeset(packet, params \\ %{}) do
     packet
     |> cast(params, [

@@ -10,12 +10,14 @@ defmodule Aprsme.ArchiveWorker do
   alias Aprsme.Aprs.Packet
 
   # API
+  @spec start_link(any) :: :ignore | {:error, any} | {:ok, pid}
   def start_link(_args \\ []) do
     GenServer.start_link(__MODULE__, [], name: :archive_worker)
   end
 
   # Callbacks
 
+  @spec init(any) :: {:ok, any}
   def init(state \\ []) do
     Process.send_after(self(), :connect, 5000)
     {:ok, state}

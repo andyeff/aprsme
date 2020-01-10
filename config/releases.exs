@@ -1,7 +1,7 @@
 import Config
 
 config :aprsme,
-  purge_packet_count: System.get_env("PACKET_PURGE_COUNT") || 1,
+  purge_packet_count: String.to_integer(System.get_env("PACKET_PURGE_COUNT")) || 1,
   purge_packet_interval: System.get_env("PACKET_PURGE_INTERVAL") || "hour"
 
 config :aprsme,
