@@ -24,6 +24,7 @@ defmodule AprsmeWeb do
       import Plug.Conn
       import AprsmeWeb.Router.Helpers
       import AprsmeWeb.Gettext
+      import Phoenix.LiveView.Controller
     end
   end
 
@@ -47,6 +48,10 @@ defmodule AprsmeWeb do
       # app-specific
       import AprsmeWeb.TimeFormatting
       import Scrivener.HTML
+
+      import Phoenix.LiveView,
+      only: [live_render: 2, live_render: 3, live_link: 1, live_link: 2,
+             live_component: 2, live_component: 3, live_component: 4]
     end
   end
 
@@ -56,6 +61,7 @@ defmodule AprsmeWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
+      import Phoenix.LiveView.Router
     end
   end
 

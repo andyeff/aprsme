@@ -8,6 +8,7 @@ defmodule Aprsme.IncomingPacketSupervisor do
   end
 
   # callbacks
+  @spec init(any) :: {:ok, {{any, any, any}, any}}
   def init(_) do
     children = [
       worker(Aprsme.WebsocketWorker, []),

@@ -1,7 +1,11 @@
 defmodule AprsmeWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :aprsme
 
-  socket("/socket", AprsmeWeb.UserSocket)
+  @session_options store: :cookie, key: "_aprsme_key", signing_salt: "VzJ+SlIB"
+
+  socket "/socket", AprsmeWeb.UserSocket
+  socket "/live", Phoenix.LiveView.Socket,
+    websocket: [connect_info: [session: @session_options]]
 
   # You should set gzip to true if you are running phoenix.digest
   # when deploying your static files in production.
@@ -34,11 +38,7 @@ defmodule AprsmeWeb.Endpoint do
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
-  plug(Plug.Session,
-    store: :cookie,
-    key: "_aprsme_key",
-    signing_salt: "VzJ+SlIB"
-  )
+  plug(Plug.Session, @session_options)
 
   plug(AprsmeWeb.Router)
 

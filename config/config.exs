@@ -16,7 +16,10 @@ config :aprsme, AprsmeWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "+mzul2LNGjl88vOYqnxPa/wkFwfeHa1PNGcj3j1GPqDa2Kajf/RFdQpG1g4RMHkF",
   render_errors: [view: AprsmeWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Aprsme.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Aprsme.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [
+    signing_salt: "ZGFb3QNQNNKrcDjqvzoM5HiXNRWwBeoL"
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,

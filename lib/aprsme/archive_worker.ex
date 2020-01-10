@@ -9,6 +9,8 @@ defmodule Aprsme.ArchiveWorker do
   alias Aprsme.Repo
   alias Aprsme.Aprs.Packet
 
+  @topic "call"
+
   # API
   @spec start_link(any) :: :ignore | {:error, any} | {:ok, pid}
   def start_link(_args \\ []) do
@@ -20,6 +22,7 @@ defmodule Aprsme.ArchiveWorker do
   @spec init(any) :: {:ok, any}
   def init(state \\ []) do
     Process.send_after(self(), :connect, 5000)
+    AprsmeWeb.Endpoint.subscribe(@topic)
     {:ok, state}
   end
 
@@ -59,6 +62,7 @@ defmodule Aprsme.ArchiveWorker do
 
         case Repo.insert(changeset) do
           {:ok, _} ->
+            Phoenix.PubSub.broadcast(Aprsme.PubSub, @topic, packet_params)
             true
 
           {:error, changeset} ->
