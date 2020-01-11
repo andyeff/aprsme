@@ -16,9 +16,8 @@ COPY deps/phoenix deps/phoenix
 COPY deps/phoenix_html deps/phoenix_html
 COPY deps/phoenix_live_view deps/phoenix_live_view
 
-WORKDIR /app/assets
-RUN npm install
-RUN npm rebuild node-sass
+RUN cd assets && npm install
+RUN cd assets && npm rebuild node-sass
 RUN npm run deploy
 
 ########################################
@@ -43,8 +42,6 @@ COPY mix.exs mix.lock ./
 RUN mix deps.get
 
 # copy only elixir files to keep the cache
-#COPY lib ./lib/
-#COPY priv ./priv/
 COPY config /app/config/
 COPY lib /app/lib/
 COPY priv /app/priv/
