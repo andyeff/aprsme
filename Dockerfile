@@ -11,17 +11,15 @@ WORKDIR /app
 ENV NODE_ENV=prod
 
 # install npm dependencies
-COPY assets/package.json assets/package-lock.json ./assets/
+COPY assets ./assets/
 COPY deps/phoenix deps/phoenix
 COPY deps/phoenix_html deps/phoenix_html
-RUN cd assets && npm install
-# Build assets
-#WORKDIR /app/assets
-#RUN npm install && ./node_modules/webpack/bin/webpack.js --mode production
+COPY deps/phoenix_live_view deps/phoenix_live_view
 
-# build assets
-COPY assets ./assets/
-RUN cd assets && npm run deploy
+WORKDIR /app/assets
+RUN npm install
+RUN npm rebuild node-sass
+RUN npm run deploy
 
 ########################################
 # 2. Build elixir backend
