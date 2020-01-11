@@ -3,7 +3,6 @@
 ########################################
 FROM bitwalker/alpine-elixir-phoenix:latest AS phx-builder
 
-
 ENV MIX_ENV=prod
 ENV NODE_ENV=prod
 
@@ -50,14 +49,6 @@ COPY --from=phx-builder /app/_build/prod/rel/aprsme ./
 ARG VERSION
 ENV VERSION=$VERSION
 ENV REPLACE_OS_VARS=true
-#EXPOSE 80
 
 ENTRYPOINT ["/app/bin/aprsme"]
 CMD ["start"]
-
-#WORKDIR /app
-#RUN npm run deploy --prefix ./assets
-#RUN mix phx.digest
-
-# Wait for rabbit to become available before starting
-#CMD /app/wait-for-it.sh rabbitmq:5672 -- /app/start.sh
