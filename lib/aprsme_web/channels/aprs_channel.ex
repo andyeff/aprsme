@@ -8,11 +8,13 @@ defmodule AprsmeWeb.AprsChannel do
 
   use AprsmeWeb, :channel
 
+  @spec join(<<_::104>>, any, any) :: {:ok, any}
   def join("aprs:messages", _params, socket) do
     Logger.debug("user JOIN: aprs:messages")
     {:ok, socket}
   end
 
+  @spec handle_info(any, any) :: {:ok, any}
   def handle_info(msg, state) do
     IO.puts("== handle_info: msg: #{msg}, state: #{inspect(state)}")
     {:ok, state}
@@ -20,6 +22,7 @@ defmodule AprsmeWeb.AprsChannel do
 
   # always send the packets in the map bounds since the JS code treats
   # existing stations as updates
+  @spec handle_in(<<_::80>>, map, Phoenix.Socket.t()) :: {:reply, :ok, Phoenix.Socket.t()}
   def handle_in("map_bounds", %{"ne" => ne, "sw" => sw, "zoom" => zoom} = params, socket) do
     Logger.debug("==> map_bounds: #{inspect(ne)}, #{inspect(sw)}, zoom: #{zoom}")
 
@@ -39,6 +42,18 @@ defmodule AprsmeWeb.AprsChannel do
 
   intercept(["aprs:position"])
 
+  @spec handle_out(
+          <<_::104>>,
+          %{
+            payload:
+              binary
+              | maybe_improper_list(
+                  binary | maybe_improper_list(any, binary | []) | byte,
+                  binary | []
+                )
+          },
+          atom | %{assigns: nil | keyword | map}
+        ) :: {:noreply, atom | %{assigns: nil | [{any, any}] | map}}
   def handle_out("aprs:position" = msg, %{payload: payload} = params, socket) do
     aprs_packet = Jason.decode!(payload)
 

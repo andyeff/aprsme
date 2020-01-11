@@ -3,7 +3,9 @@ defmodule AprsmeWeb.Endpoint do
 
   @session_options store: :cookie, key: "_aprsme_key", signing_salt: "VzJ+SlIB"
 
-  socket "/socket", AprsmeWeb.UserSocket
+  socket "/socket", AprsmeWeb.UserSocket,
+    websocket: true,
+    longpoll: false
   socket "/live", Phoenix.LiveView.Socket,
     websocket: [connect_info: [session: @session_options]]
 
@@ -12,7 +14,7 @@ defmodule AprsmeWeb.Endpoint do
   plug(Plug.Static,
     at: "/",
     from: :aprsme,
-    gzip: false,
+    gzip: true,
     only: ~w(css fonts images js favicon.ico robots.txt)
   )
 
@@ -24,23 +26,29 @@ defmodule AprsmeWeb.Endpoint do
     plug(Phoenix.CodeReloader)
   end
 
-  plug(Plug.Logger)
+  #plug(Plug.Logger)
+
+  plug Plug.RequestId
+  plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
 
   plug(Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
-    json_decoder: Jason
+    json_decoder: Phoenix.json_library()
   )
 
-  plug(Plug.MethodOverride)
-  plug(Plug.Head)
+  plug Plug.MethodOverride
+  plug Plug.Head
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
-  plug(Plug.Session, @session_options)
+  plug Plug.Session,
+    store: :cookie,
+    key: "_aprsme_key",
+    signing_salt: "mmbcDv8L"
 
-  plug(AprsmeWeb.Router)
+  plug AprsmeWeb.Router
 
   @doc """
   Callback invoked for dynamically configuring the endpoint.

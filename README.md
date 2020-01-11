@@ -3,7 +3,7 @@
 ## Local Development
 
 ## Start dependencies with docker-compose (will start rabbitmq, aprs injest, and postgresql.)
-    $ docker-compose -f docker-compose-dev.yml up
+    $ docker-compose -f docker-compose.dev.yml up
 
 You can then view the RabbitMQ admin at http://localhost:15672/
 The default bitnami username and password are in docker-compose.yml

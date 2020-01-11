@@ -1,0 +1,13 @@
+sut:
+  build: .
+  command: mix test
+
+postgres:
+  image: 'mdillon/postgis:11-alpine'
+  ports:
+    - 25432:5432
+  environment:
+    - POSTGRES_DB=aprsme_test
+    - POSTGRES_PASSWORD=postgres
+  networks:
+    - app-tier

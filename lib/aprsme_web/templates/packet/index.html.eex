@@ -11,8 +11,8 @@
   <tbody>
 <%= for packet <- @page.entries do %>
     <tr>
-      <td class="collapsing"><%= link packet.inserted_at, to: packet_path(@conn, :show, packet)  %></td>
-      <td><%= link packet.srccallsign, to: call_path(@conn, :show, packet.srccallsign) %></td>
+      <td class="collapsing"><%= link packet.inserted_at, to: Routes.packet_path(@conn, :show, packet)  %></td>
+      <td><%= link packet.srccallsign, to: Routes.call_path(@conn, :show, packet.srccallsign) %></td>
       <td><%= packet.comment %></td>
     </tr>
 <% end %>

@@ -4,7 +4,7 @@
 <table class="ui table celled stackable compact tiny selectable">
   <tr>
     <td>Originating Callsign</td>
-    <td><%= link @packet.srccallsign, to: call_path(@conn, :show, @packet.srccallsign) %></td>
+    <td><%= link @packet.srccallsign, to: Routes.call_path(@conn, :show, @packet.srccallsign) %></td>
   </tr>
   <%= attr_row @packet.alive, "Alive" %>
   <%= attr_row @packet.altitude, "Altitude" %>
@@ -46,4 +46,4 @@
   <%= attr_row @packet.symboltable, "Symbol Table" %>
 </table>
 
-<%= link "Back to callsign", to: call_path(@conn, :show, @packet.srccallsign) %>
+<%= link "Back to callsign", to: Routes.call_path(@conn, :show, @packet.srccallsign) %>

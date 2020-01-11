@@ -9,7 +9,7 @@ defmodule AprsmeWeb.PageController do
         render(conn, "index.html")
 
       _ ->
-        conn |> redirect(to: map_path(conn, :index))
+        conn |> redirect(to: Routes.map_path(conn, :index))
     end
   end
 

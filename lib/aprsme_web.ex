@@ -22,7 +22,7 @@ defmodule AprsmeWeb do
     quote do
       use Phoenix.Controller, namespace: AprsmeWeb
       import Plug.Conn
-      import AprsmeWeb.Router.Helpers
+      alias AprsmeWeb.Router.Helpers, as: Routes
       import AprsmeWeb.Gettext
       import Phoenix.LiveView.Controller
     end
@@ -41,7 +41,8 @@ defmodule AprsmeWeb do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import AprsmeWeb.Router.Helpers
+      alias AprsmeWeb.Router.Helpers, as: Routes
+
       import AprsmeWeb.ErrorHelpers
       import AprsmeWeb.Gettext
 
