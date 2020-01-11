@@ -18,7 +18,7 @@ COPY deps/phoenix_live_view deps/phoenix_live_view
 
 RUN cd assets && npm install
 RUN cd assets && npm rebuild node-sass
-RUN npm run deploy
+RUN cd assets && npm run deploy
 
 ########################################
 # 2. Build elixir backend
