@@ -1,11 +1,5 @@
 ########################################
-# 1. Build nodejs frontend
-########################################
-#FROM node:12.14.0-alpine3.11 as build-node
-
-
-########################################
-# 2. Build elixir backend
+# 1. Build elixir backend
 ########################################
 FROM elixir:1.9.4-alpine as build-elixir
 
@@ -14,14 +8,11 @@ RUN apk add --update git bash nodejs npm
 # prepare build dir
 RUN mkdir /app
 WORKDIR /app
+RUN mkdir -p /app/assets
 
 # set build ENV
 ENV NODE_ENV=prod
 ENV MIX_ENV=prod
-
-# prepare build dir
-RUN mkdir -p /app/assets
-WORKDIR /app
 
 # Install Hex + Rebar
 RUN mix do local.hex --force, local.rebar --force
@@ -32,9 +23,6 @@ RUN mix deps.get --only prod
 
 # install npm dependencies
 COPY assets ./assets/
-COPY deps/phoenix deps/phoenix
-COPY deps/phoenix_html deps/phoenix_html
-COPY deps/phoenix_live_view deps/phoenix_live_view
 
 RUN cd assets && npm install
 RUN cd assets && npm rebuild node-sass
@@ -48,16 +36,13 @@ COPY start.sh /app/
 COPY wait-for-it.sh /app/
 
 RUN mix deps.compile
-
-# copy assets from node build
-#COPY --from=build-node /app/priv/static ./priv/static
 RUN mix phx.digest
 
 # build release
 RUN mix release
 
 ########################################
-# 3. Build release image
+# 2. Build release image
 ########################################
 FROM alpine:3.11.2
 RUN apk add --update bash openssl
@@ -73,10 +58,3 @@ ENV REPLACE_OS_VARS=true
 
 ENTRYPOINT ["/app/bin/aprsme"]
 CMD ["start"]
-
-#WORKDIR /app
-#RUN npm run deploy --prefix ./assets
-#RUN mix phx.digest
-
-# Wait for rabbit to become available before starting
-#CMD /app/wait-for-it.sh rabbitmq:5672 -- /app/start.sh
