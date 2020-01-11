@@ -15,6 +15,7 @@ defmodule AprsmeWeb.CallView do
       :timer.send_interval(1000, self(), :tick)
     end
 
+    IO.inspect session
     # if connected?(socket) do
     #   Phoenix.PubSub.subscribe(LiveviewDemo.PubSub, @topic)
     # end
@@ -22,22 +23,22 @@ defmodule AprsmeWeb.CallView do
     time = NaiveDateTime.utc_now()
     socket = socket
       |> assign(:time, time)
+      |> assign(:packets, [])
+      |> assign(:callsign, session["callsign"] )
     {:ok, socket}
   end
 
-  # def handle_info(:get_addresses, socket) do
-  #   addresses = Wispetc.Sonar.Addresses.get_by_account(socket.assigns[:account]["id"])
-  #   socket =
-  #     socket
-  #       |> assign(:addresses, hd(addresses))
-  #   {:noreply, socket}
-  # end
-
-  def handle_info(%Phoenix.Socket.Broadcast{topic: @topic, payload: state}, socket) do
-    IO.puts "HANDLE BROADCAST FOR #{state[:call]}"
-    {:noreply, assign(socket, state)}
+  def handle_info({:call_update, payload}, socket) do
+    if payload["srccallsign"] == socket.assigns[:callsign] do
+      updated_packets = socket.assigns[:packets] ++ [payload["origpacket"]]
+      socket = socket
+      |> assign(:packets, updated_packets)
+      IO.inspect socket.assigns
+    end
+    {:noreply, socket}
   end
 
+  @spec handle_info(:tick, Phoenix.LiveView.Socket.t()) :: {:noreply, any}
   def handle_info(:tick, socket) do
     {:noreply, handle_tick(socket)}
   end

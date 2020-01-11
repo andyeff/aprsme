@@ -1,1 +1,7 @@
 <h1><%= @time %></h1>
+
+<ul>
+<% for packet <- @packets do %>
+  <li><%= packet %></li>
+<% end %>
+</ul>

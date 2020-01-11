@@ -13,6 +13,6 @@ defmodule AprsmeWeb.CallController do
 
     #render(conn, "show.html", page: page, callsign: id)
     conn
-    |> LiveView.Controller.live_render(AprsmeWeb.CallView, session: %{"callsign" => id})
+    |> LiveView.Controller.live_render(AprsmeWeb.CallView, session: %{"callsign" => String.upcase(id)})
   end
 end

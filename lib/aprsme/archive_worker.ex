@@ -62,8 +62,7 @@ defmodule Aprsme.ArchiveWorker do
 
         case Repo.insert(changeset) do
           {:ok, _} ->
-            Phoenix.PubSub.broadcast(Aprsme.PubSub, @topic, packet_params)
-            true
+            Phoenix.PubSub.broadcast(Aprsme.PubSub, @topic, {:call_update, packet_params})
 
           {:error, changeset} ->
             log("**********")
