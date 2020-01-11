@@ -11,8 +11,10 @@ defmodule AprsmeWeb.CallController do
     #   |> Packet.recent_by_callsign(id)
     #   |> Repo.paginate(params)
 
-    #render(conn, "show.html", page: page, callsign: id)
+    # render(conn, "show.html", page: page, callsign: id)
     conn
-    |> LiveView.Controller.live_render(AprsmeWeb.CallView, session: %{"callsign" => String.upcase(id)})
+    |> LiveView.Controller.live_render(AprsmeWeb.CallView,
+      session: %{"callsign" => String.upcase(id)}
+    )
   end
 end

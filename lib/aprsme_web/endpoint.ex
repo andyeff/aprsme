@@ -6,8 +6,8 @@ defmodule AprsmeWeb.Endpoint do
   socket "/socket", AprsmeWeb.UserSocket,
     websocket: true,
     longpoll: false
-  socket "/live", Phoenix.LiveView.Socket,
-    websocket: [connect_info: [session: @session_options]]
+
+  socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # You should set gzip to true if you are running phoenix.digest
   # when deploying your static files in production.
@@ -26,7 +26,7 @@ defmodule AprsmeWeb.Endpoint do
     plug(Phoenix.CodeReloader)
   end
 
-  #plug(Plug.Logger)
+  # plug(Plug.Logger)
 
   plug Plug.RequestId
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]

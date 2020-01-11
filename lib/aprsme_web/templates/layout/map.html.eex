@@ -26,5 +26,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.min.js"></script>
     <script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    <%= render_existing @view_module, "scripts.html", assigns %>
   </body>
 </html>

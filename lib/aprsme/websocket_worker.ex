@@ -36,7 +36,7 @@ defmodule Aprsme.WebsocketWorker do
       :ok = AMQP.Queue.bind(channel, @queue_name, @source_exchange_name, routing_key: "#")
 
       log("basic.consume...")
-      AMQP.Basic.consume(channel, @queue_name, nil, no_ack: true)
+      # AMQP.Basic.consume(channel, @queue_name, nil, no_ack: true)
 
       log("#{__MODULE__}: Waiting for messages")
 

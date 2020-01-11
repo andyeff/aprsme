@@ -13,7 +13,6 @@ defmodule AprsmeWeb.PacketController do
     render(conn, "index.html", page: page)
   end
 
-
   def show(conn, %{"id" => id}) do
     packet = Repo.get!(Packet, id)
     render(conn, "show.html", packet: packet)

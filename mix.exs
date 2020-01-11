@@ -52,6 +52,8 @@ defmodule Aprsme.Mixfile do
       {:timex, "~> 3.4"},
       {:geo, "~> 3.0"},
       {:geo_postgis, "~> 3.3.1"},
+      {:geolix, "~> 1.0"},
+      {:geolix_adapter_mmdb2, "~> 0.3.0"},
       {:scrivener_ecto, "~> 2.2.0"},
       {:scrivener_html, "~> 1.8.1"},
       {:quantum, "~> 2.3"},
