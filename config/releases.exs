@@ -7,7 +7,9 @@ import Config
 config :aprsme,
   rabbitmq_url: System.fetch_env!("RABBITMQ_URL")
 
-config :aprsme, AprsmeWeb.Endpoint, secret_key_base: System.fetch_env!("SECRET_KEY_BASE")
+config :aprsme, AprsmeWeb.Endpoint,
+  secret_key_base: System.fetch_env!("SECRET_KEY_BASE"),
+  http: [:inet6, port: String.to_integer(System.get_env("PORT") || "4000")]
 
 config :aprsme, Aprsme.Repo,
   adapter: Ecto.Adapters.Postgres,
