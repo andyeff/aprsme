@@ -27,17 +27,3 @@ config :aprsme, AprsmeWeb.Endpoint,
     keyfile: System.fetch_env!("SSL_KEY_PATH"),
     certfile: System.fetch_env!("SSL_CERT_PATH")
   ]
-
-config :geolix,
-  databases: [
-    %{
-      id: :city,
-      adapter: Geolix.Adapter.MMDB2,
-      source: "/data/geoip/GeoLite2-City.mmdb"
-    },
-    %{
-      id: :country,
-      adapter: Geolix.Adapter.MMDB2,
-      source: "/data/geoip/GeoLite2-Country.mmdb"
-    }
-  ]
