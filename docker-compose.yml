@@ -17,15 +17,17 @@ services:
       - "443:443"
     networks:
       - app-tier
+    volumes:
+      - /etc/letsencrypt/live/aprs.me:/ssl
     environment:
       - HOSTNAME=aprs.me
-      - PORT=80
+      - PORT=80,443
       - SECRET_KEY_BASE=hZN8qjZYwwI2rIXtXwbCJoFl/xxxW/VSi+4Fd/ZvP4XAJiLUdKG86dF9Pu0tnrMm
       - DATABASE_URL=postgresql://postgres:2LRfvZdwWshXUFXFEJvBkegd@postgres/aprsme
       - ERL_CRASH_DUMP_BYTES=0
       - RABBITMQ_URL=amqp://user:bitnami@rabbitmq:5672/aprs
-      - SSL_KEY_PATH=/etc/letsencrypt/live/aprs.me/privkey.pem
-      - SSL_CERT_PATH=/etc/letsencrypt/live/aprs.me/fullchain.pem
+      - SSL_KEY_PATH=/ssl/privkey.pem
+      - SSL_CERT_PATH=/ssl/fullchain.pem
     depends_on:
       - 'rabbitmq'
       - 'postgres'
