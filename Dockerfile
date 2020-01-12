@@ -29,7 +29,6 @@ RUN cd assets && npm install && npm rebuild node-sass && npm run deploy
 COPY config /app/config/
 COPY lib /app/lib/
 COPY priv /app/priv/
-COPY start.sh /app/
 COPY wait-for-it.sh /app/
 
 RUN mix deps.compile && mix phx.digest && mix release
