@@ -106,7 +106,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     #command: --interval 1800 --cleanup true aprsme-app
-    command: --interval 780 --cleanup true aprsme-app
+    command: --interval 59 --cleanup true aprsme-app
 
 volumes:
   storage:
