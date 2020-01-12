@@ -25,5 +25,7 @@ log
 postgres/
 /priv/plts/*.plt
 /priv/plts/*.plt.hash
-data/
+data/postgres
+data/geoip
+data/certbot
 

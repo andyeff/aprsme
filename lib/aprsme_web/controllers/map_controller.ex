@@ -5,6 +5,7 @@ defmodule AprsmeWeb.MapController do
 
   def index(conn, _params) do
     ip = conn.remote_ip |> :inet_parse.ntoa() |> to_string()
+    IO.inspect(ip)
     IO.inspect(Geolix.lookup(ip))
 
     with %{

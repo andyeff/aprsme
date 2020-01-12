@@ -13,26 +13,32 @@ services:
     container_name: aprsme-app
     restart: always
     ports:
-      - "80:80"
       - "443:443"
     networks:
       - app-tier
     volumes:
-      - /etc/letsencrypt:/ssl
       - ./data/geoip:/data/geoip
     environment:
-      - PORT=80
+      - PORT=4000
       - HOSTNAME=aprs.me
       - SECRET_KEY_BASE=hZN8qjZYwwI2rIXtXwbCJoFl/xxxW/VSi+4Fd/ZvP4XAJiLUdKG86dF9Pu0tnrMm
       - DATABASE_URL=postgresql://postgres:2LRfvZdwWshXUFXFEJvBkegd@postgres/aprsme
       - ERL_CRASH_DUMP_BYTES=0
       - RABBITMQ_URL=amqp://user:bitnami@rabbitmq:5672/aprs
-      - SSL_KEY_PATH=/ssl/live/aprs.me/privkey.pem
-      - SSL_CERT_PATH=/ssl/live/aprs.me/fullchain.pem
     depends_on:
       - 'rabbitmq'
       - 'postgres'
       - 'aprs_slurp'
+
+  nginx:
+    image: nginx:1.17.7-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./data/nginx:/etc/nginx/conf.d
+      - /etc/letsencrypt:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
 
   rabbitmq:
     image: 'bitnami/rabbitmq:latest'
