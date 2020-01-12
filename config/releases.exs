@@ -15,7 +15,9 @@ config :aprsme, Aprsme.Repo,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   timeout: 60000
 
-  config :aprsme, AprsmeWeb.Endpoint,
+config :aprsme, force_ssl: true
+
+config :aprsme, AprsmeWeb.Endpoint,
   url: [host: "https://aprs.me"],
   check_origin: ["//aprs.me"],
   https: [:inet6,

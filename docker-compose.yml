@@ -20,6 +20,7 @@ services:
     volumes:
       - /etc/letsencrypt/live/aprs.me:/ssl
     environment:
+      - PORT=80
       - HOSTNAME=aprs.me
       - SECRET_KEY_BASE=hZN8qjZYwwI2rIXtXwbCJoFl/xxxW/VSi+4Fd/ZvP4XAJiLUdKG86dF9Pu0tnrMm
       - DATABASE_URL=postgresql://postgres:2LRfvZdwWshXUFXFEJvBkegd@postgres/aprsme
