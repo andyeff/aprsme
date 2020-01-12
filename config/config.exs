@@ -50,7 +50,7 @@ config :geolix,
     %{
       id: :country,
       adapter: Geolix.Adapter.MMDB2,
-      source: "./data/GeoLite2-Country.mmdb"
+      source: "./data/geoip/GeoLite2-Country.mmdb"
     }
   ]
 
