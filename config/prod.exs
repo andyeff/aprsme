@@ -24,7 +24,7 @@ config :geolix,
 
 # check_origin must be specified to enable WebSockets to work
 config :aprsme, AprsmeWeb.Endpoint,
-  #url: [host: "https://aprs.me"],
+  url: [host: "https://aprs.me"],
   check_origin: ["//aprs.me"]
 
 import_config "prod.secret.exs"
