@@ -5,7 +5,7 @@ defmodule AprsmeWeb.MapController do
 
   def index(conn, _params) do
     ip = conn.remote_ip |> :inet_parse.ntoa() |> to_string()
-
+    IO.inspect Geolix.lookup(ip)
     with %{
            city: %Geolix.Adapter.MMDB2.Result.City{
              city: city,
