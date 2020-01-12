@@ -16,6 +16,7 @@ defmodule AprsmeWeb.Router do
 
   pipeline :api do
     plug(:accepts, ["json"])
+
     if Application.get_env(:aprsme, :force_ssl) do
       plug(Plug.SSL, rewrite_on: [:x_forwarded_proto], host: nil)
     end

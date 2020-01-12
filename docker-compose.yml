@@ -19,7 +19,7 @@ services:
       - app-tier
     volumes:
       - /etc/letsencrypt/live/aprs.me:/ssl
-      - ./data/geoip:./data/geoip
+      - ./data/geoip:/data/geoip
     environment:
       - PORT=80
       - HOSTNAME=aprs.me
