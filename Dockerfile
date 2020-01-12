@@ -51,4 +51,4 @@ ENV REPLACE_OS_VARS=true
 COPY entrypoint.sh .
 
 # Run the Phoenix app
-CMD ["./entrypoint.sh"]
+CMD "./entrypoint.sh"
