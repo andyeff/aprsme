@@ -4,7 +4,7 @@ defmodule AprsmeWeb.MapController do
   plug(:put_layout, "map.html")
 
   def index(conn, _params) do
-    ip = conn.remote_ip |> :inet_parse.ntoa() |> to_string()
+    ip = conn.get_req_header(conn, "x-forwarded-for") |> :inet_parse.ntoa() |> to_string()
     IO.inspect(ip)
     IO.inspect(Geolix.lookup(ip))
 
