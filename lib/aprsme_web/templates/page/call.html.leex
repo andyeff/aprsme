@@ -1,7 +1,13 @@
-<h1><%= @time %></h1>
+<h2>Latest Packets for <%= @callsign %></h2>
 
-<ul>
-<% for packet <- @packets do %>
-  <li><%= packet %></li>
-<% end %>
-</ul>
+<%= pagination_links @packets, view_style: :semantic %>
+<div class="ui list">
+  <%= for packet <- @packets.entries do %>
+    <div class="item">
+      <%= format_ts(packet.inserted_at)  %>:
+      <span class="mono"><%= packet.origpacket %></span>
+    </div>
+  <% end %>
+</div>
+
+<%= pagination_links @packets, view_style: :semantic %>
