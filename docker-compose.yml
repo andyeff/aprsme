@@ -24,6 +24,8 @@ services:
       - DATABASE_URL=postgresql://postgres:2LRfvZdwWshXUFXFEJvBkegd@postgres/aprsme
       - ERL_CRASH_DUMP_BYTES=0
       - RABBITMQ_URL=amqp://user:bitnami@rabbitmq:5672/aprs
+      - SSL_KEY_PATH=/etc/letsencrypt/live/aprs.me/privkey.pem
+      - SSL_CERT_PATH=/etc/letsencrypt/live/aprs.me/fullchain.pem
     depends_on:
       - 'rabbitmq'
       - 'postgres'

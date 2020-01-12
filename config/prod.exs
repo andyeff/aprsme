@@ -61,7 +61,11 @@ config :phoenix, :serve_endpoints, true
 # check_origin must be specified to enable WebSockets to work
 config :aprsme, AprsmeWeb.Endpoint,
   url: [host: "https://aprs.me"],
-  check_origin: ["//aprs.me"]
+  check_origin: ["//aprs.me"],
+  https: [:inet6,
+    port: 443,
+    keyfile: System.fetch_env!("SSL_KEY_PATH"),
+    certfile: System.fetch_env!("SSL_CERT_PATH")]
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
