@@ -14,3 +14,11 @@ config :aprsme, Aprsme.Repo,
   url: System.fetch_env!("DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   timeout: 60000
+
+  config :aprsme, AprsmeWeb.Endpoint,
+  url: [host: "https://aprs.me"],
+  check_origin: ["//aprs.me"],
+  https: [:inet6,
+    port: 443,
+    keyfile: System.fetch_env!("SSL_KEY_PATH"),
+    certfile: System.fetch_env!("SSL_CERT_PATH")]
