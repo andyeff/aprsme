@@ -26,6 +26,11 @@ import mapboxAccessToken from './mapboxAccessToken';
 import Packet from "./packet";
 import randomColor from "./randomColor";
 import symbols from "./symbols";
+import Vue from 'vue';
+
+//const files = require.context('./components/', true, /\.vue$/i);
+//files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+import StationList from "./components/station_list.vue";
 
 // common to all pages
 $(".dropdown").dropdown();
@@ -165,16 +170,60 @@ if ($('#map').length !== 1) {
         marker = new L.Marker(packetPos, {icon: icon});
         markerGroup.addLayer(marker);
 
+        Vue.set(data.markersByCallsign, callsign, marker);
         data.recentCallsigns.push(callsign);
 
         if (!pkt.isObject()) {
           let polyline = L.polyline(packetPos, {color: randomColor(), opacity: 0.8, weight: 4, smoothFactor: 1.0}).addTo(map);
+          Vue.set(data.polylinesByCallsign, callsign, polyline);
         }
       }
 
       return marker;
     }
   };
+
+  let vm = new Vue({
+    el: '#app',
+    data: data,
+    components: {
+      'station-list': StationList,
+    },
+    computed: {
+      stationsByCallsign: function() {
+        return Object.keys(data.markersByCallsign);
+      },
+      zoomedOutTooFar: function() {
+        // This need to be coordinated with
+        // The min_zoom_level in aprs_channel.ex
+        return data.mapZoom < 9;
+      }
+    },
+    methods: {
+      focusMarker: function(callsign) {
+        const marker = data.markersByCallsign[callsign];
+
+        if (marker) {
+          console.log("marker latlng:", marker.getLatLng() );
+          map.setView(marker.getLatLng());
+          marker.openPopup();
+        }
+      }
+    },
+    template: `
+      <div id="vueApp">
+        <div class="ui container">
+          <div v-if="zoomedOutTooFar" class="ui blue icon tiny message">
+            <i class="icon info circle"></i>
+            <div class="content">
+              <p>Zoom in to see live positions.</p>
+            </div>
+          </div>
+          <station-list :stations="recentCallsigns" :focusMarker="focusMarker" />
+        </div> <!-- container -->
+      </div>
+    `,
+  });
 
   let APRS = {
 

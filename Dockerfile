@@ -49,5 +49,7 @@ ARG VERSION
 ENV VERSION=$VERSION
 ENV REPLACE_OS_VARS=true
 
-ENTRYPOINT ["/app/bin/aprsme"]
-CMD ["start"]
+COPY entrypoint.sh .
+
+# Run the Phoenix app
+CMD ["./entrypoint.sh"]
