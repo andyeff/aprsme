@@ -18,6 +18,7 @@ config :aprsme, Aprsme.Repo,
 config :aprsme, force_ssl: true
 
 config :aprsme, AprsmeWeb.Endpoint,
+  force_ssl: [rewrite_on: [:x_forwarded_proto], host: nil],
   url: [host: "https://aprs.me"],
   check_origin: ["//aprs.me"],
   https: [
