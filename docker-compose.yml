@@ -18,7 +18,7 @@ services:
     networks:
       - app-tier
     volumes:
-      - /etc/letsencrypt/live/aprs.me:/ssl
+      - /etc/letsencrypt:/ssl
       - ./data/geoip:/data/geoip
     environment:
       - PORT=80
@@ -27,8 +27,8 @@ services:
       - DATABASE_URL=postgresql://postgres:2LRfvZdwWshXUFXFEJvBkegd@postgres/aprsme
       - ERL_CRASH_DUMP_BYTES=0
       - RABBITMQ_URL=amqp://user:bitnami@rabbitmq:5672/aprs
-      - SSL_KEY_PATH=/ssl/privkey.pem
-      - SSL_CERT_PATH=/ssl/fullchain.pem
+      - SSL_KEY_PATH=/ssl/live/aprs.me/privkey.pem
+      - SSL_CERT_PATH=/ssl/live/aprs.me/fullchain.pem
     depends_on:
       - 'rabbitmq'
       - 'postgres'
