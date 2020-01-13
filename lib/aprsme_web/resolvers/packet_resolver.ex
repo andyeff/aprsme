@@ -14,6 +14,13 @@ defmodule AprsmeWeb.PacketResolver do
   end
 
   def find(%{srccallsign: srccallsign} = args, _info) do
-    {:ok, Packet |> Packet.recent_by_callsign(srccallsign) |> Repo.all}
+    packets = Packet |> Packet.recent_by_callsign(srccallsign) |> Repo.all
+    {:ok, packets}
   end
+
+  def find(%{id: id} = args, _info) do
+    packets = Packet.find(id)
+    {:ok, packets}
+  end
+
 end

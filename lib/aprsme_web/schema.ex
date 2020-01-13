@@ -1,5 +1,6 @@
 defmodule AprsmeWeb.Schema do
   use Absinthe.Schema
+  #import Absinthe.Resolution.Helpers
   import_types Absinthe.Type.Custom
   import_types AprsmeWeb.Schema.Types
 
@@ -14,7 +15,8 @@ defmodule AprsmeWeb.Schema do
     # end
 
     field :packet, type: :packet do
-      arg :srccallsign, non_null(:string)
+      arg :id, :integer
+      arg :srccallsign, :string
       resolve &AprsmeWeb.PacketResolver.find/2
     end
   end

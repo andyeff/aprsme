@@ -10,13 +10,22 @@ defmodule Aprsme.Aprs.Packet do
   import Geo.PostGIS
 
   use Ecto.Schema
+  use AprsmeWeb.Model
+  alias Aprsme.Repo
 
-  def all do
-    Repo.all(from p in __MODULE__, order_by: [desc: p.id])
+  def data() do
+    Dataloader.Ecto.new(Repo, query: &query/2)
+  end
+
+  def query(queryable, params) do
+    case Map.get(params, :order_by) do
+      nil -> queryable
+      order_by -> from record in queryable, order_by: ^order_by
+    end
   end
 
   def find(id) do
-    Repo.get(__MODULE__, id)
+    Packet |> Repo.get(id)
   end
 
   @spec recent(any) :: Ecto.Query.t()
