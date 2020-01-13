@@ -7,10 +7,12 @@ defmodule AprsmeWeb.CallController do
 
   def show(conn, %{"id" => id} = params) do
     callsign = String.upcase(id)
+
     packets =
       Packet
       |> Packet.recent_by_callsign(callsign)
       |> Repo.paginate(params)
+
     conn
     |> LiveView.Controller.live_render(AprsmeWeb.CallView,
       session: %{callsign: callsign, packets: packets}

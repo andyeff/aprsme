@@ -33,7 +33,7 @@ defmodule AprsmeWeb.CallView do
   end
 
   def handle_info({:call_update, payload}, socket) do
-    #updated_packets = socket.assigns[:packets] ++ [payload["origpacket"]]
+    # updated_packets = socket.assigns[:packets] ++ [payload["origpacket"]]
     updated_packets =
       Packet
       |> Packet.recent_by_callsign(socket.assigns[:callsign])
@@ -43,7 +43,7 @@ defmodule AprsmeWeb.CallView do
       socket
       |> assign(:packets, updated_packets)
 
-    #IO.inspect(socket.assigns)
+    # IO.inspect(socket.assigns)
 
     {:noreply, socket}
   end

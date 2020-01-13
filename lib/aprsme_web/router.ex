@@ -22,4 +22,10 @@ defmodule AprsmeWeb.Router do
     resources("/packets", PacketController, only: [:show])
     resources("/call", CallController, only: [:show])
   end
+
+  scope "/api" do
+    pipe_through :api
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: AprsmeWeb.Schema
+  end
 end

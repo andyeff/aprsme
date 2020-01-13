@@ -59,6 +59,10 @@ defmodule Aprsme.Mixfile do
       {:quantum, "~> 2.3"},
       {:retry, "~> 0.13.0"},
       {:remote_ip, "~> 0.2.0"},
+      {:absinthe, "~> 1.4"},
+      {:absinthe_plug, "~> 1.4"},
+      {:dataloader, "~> 1.0.0"},
+      {:ex_machina, "~> 2.3", only: :test},
       {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false}
     ]
   end

@@ -1,0 +1,52 @@
+defmodule AprsmeWeb.Schema.Types do
+  use Absinthe.Schema.Notation
+
+  @desc "A packet"
+  object :packet do
+    field :id, :id
+    field :inserted_at, :datetime
+    field :alive, :integer
+    field :altitude, :float
+    field :body, :string
+    field :capabilities, :string
+    field :checksumok, :integer
+    field :comment, :string
+    field :course, :integer
+    field :daodatumbyte, :string
+    field :destination, :string
+    field :dstcallsign, :string
+    field :dxcall, :string
+    field :dxfreq, :string
+    field :dxinfo, :string
+    field :dxsource, :string
+    field :dxtime, :string
+    field :format, :string
+    field :gpsfixstatus, :integer
+    field :header, :string
+    field :itemname, :string
+    field :latitude, :float
+    field :longitude, :float
+    field :mbits, :string
+    field :message, :string
+    field :messageack, :string
+    field :messageid, :string
+    field :messagerej, :string
+    field :messaging, :integer
+    field :objectname, :string
+    field :origpacket, :string
+    field :type, :string
+    field :phg, :integer
+    field :posambiguity, :integer
+    field :posresolution, :float
+    field :radiorange, :float
+    field :resultcode, :string
+    field :resultmsg, :string
+    field :speed, :float
+    field :srccallsign, :string
+    field :status, :string
+    field :symbolcode, :string
+    field :symboltable, :string
+    field :telemetry, :string
+    field :timestamp, :datetime
+  end
+end

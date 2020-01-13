@@ -11,6 +11,14 @@ defmodule Aprsme.Aprs.Packet do
 
   use Ecto.Schema
 
+  def all do
+    Repo.all(from p in __MODULE__, order_by: [desc: p.id])
+  end
+
+  def find(id) do
+    Repo.get(__MODULE__, id)
+  end
+
   @spec recent(any) :: Ecto.Query.t()
   def recent(query) do
     from(q in query,

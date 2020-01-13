@@ -4,7 +4,8 @@
 <div class="ui list">
   <%= for packet <- @packets.entries do %>
     <div class="item">
-      <%= format_ts(packet.inserted_at)  %>:
+      <%= packet.id  %> :
+      <%= format_ts(packet.inserted_at)  %> :
       <span class="mono"><%= packet.origpacket %></span>
     </div>
   <% end %>
