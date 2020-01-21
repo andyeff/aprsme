@@ -1,0 +1,52 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./docker-compose.yml
+    kompose.version: 1.20.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+  name: app
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./docker-compose.yml
+        kompose.version: 1.20.0 ()
+      creationTimestamp: null
+      labels:
+        io.kompose.network/app-tier: "true"
+        io.kompose.service: app
+    spec:
+      containers:
+      - env:
+        - name: DATABASE_URL
+          value: postgresql://postgres:2LRfvZdwWshXUFXFEJvBkegd@postgres/aprsme
+        - name: ERL_CRASH_DUMP_BYTES
+          value: "0"
+        - name: HOSTNAME
+          value: aprs.me
+        - name: PORT
+          value: "4000"
+        - name: RABBITMQ_URL
+          value: amqp://user:bitnami@rabbitmq:5672/aprs
+        - name: SECRET_KEY_BASE
+          value: hZN8qjZYwwI2rIXtXwbCJoFl/xxxW/VSi+4Fd/ZvP4XAJiLUdKG86dF9Pu0tnrMm
+        image: aprsme/app:latest
+        name: aprsme-app
+        ports:
+        - containerPort: 4000
+        resources: {}
+        volumeMounts:
+        - mountPath: /data/geoip
+          name: app-claim0
+      restartPolicy: Always
+      volumes:
+      - name: app-claim0
+        persistentVolumeClaim:
+          claimName: app-claim0
+status: {}

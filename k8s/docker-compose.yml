@@ -1,0 +1,115 @@
+version: '3'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  app:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: aprsme/app:latest
+    container_name: aprsme-app
+    restart: always
+    ports:
+      - "4000:4000"
+    networks:
+      - app-tier
+    volumes:
+      - ./data/geoip:/data/geoip
+    environment:
+      - PORT=4000
+      - HOSTNAME=aprs.me
+      - SECRET_KEY_BASE=hZN8qjZYwwI2rIXtXwbCJoFl/xxxW/VSi+4Fd/ZvP4XAJiLUdKG86dF9Pu0tnrMm
+      - DATABASE_URL=postgresql://postgres:2LRfvZdwWshXUFXFEJvBkegd@postgres/aprsme
+      - ERL_CRASH_DUMP_BYTES=0
+      - RABBITMQ_URL=amqp://user:bitnami@rabbitmq:5672/aprs
+    depends_on:
+      - 'rabbitmq'
+      - 'postgres'
+      - 'aprs_slurp'
+
+  nginx:
+    image: nginx:1.17.7-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - app-tier
+    volumes:
+      - ./data/nginx:/etc/nginx/conf.d
+      - /etc/letsencrypt:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+
+  rabbitmq:
+    image: 'bitnami/rabbitmq:latest'
+    restart: always
+    environment:
+      - RABBITMQ_VHOST=aprs
+    ports:
+      - 15672:15672
+      - 5672:5672
+    networks:
+      - app-tier
+
+  aprs_slurp:
+    depends_on:
+      - 'rabbitmq'
+    image: 'aprsme/aprs_slurp:latest'
+    restart: always
+    environment:
+      - APRS_USERNAME=APRSME-99
+      - APRS_SERVER=g.vntx.net:10152
+      - RABBITMQ_USERNAME=user
+      - RABBITMQ_PASSWORD=bitnami
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_VHOST=aprs
+      - RABBITMQ_HOST=rabbitmq
+    networks:
+      - app-tier
+
+  postgres:
+    image: 'mdillon/postgis:11-alpine'
+    restart: always
+    ports:
+      - 25432:5432
+    environment:
+      - POSTGRES_DB=aprsme
+      - POSTGRES_PASSWORD=2LRfvZdwWshXUFXFEJvBkegd
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - app-tier
+
+  geoipupdate:
+    image: 'tkrs/maxmind-geoipupdate:latest'
+    restart: always
+    environment:
+      - GEOIP_DB_DIR=/opt/geoip
+      - ACCOUNT_ID=165665
+      - LICENSE_KEY=ZTErFxgJ2JKy3ZvJ
+    volumes:
+      - ./data/geoip:/opt/geoip
+    networks:
+      - app-tier
+
+  certbot:
+    image: certbot/certbot
+    restart: always
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+
+  watchtower:
+    image: v2tec/watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    #command: --interval 1800 --cleanup true aprsme-app
+    command: --interval 59 --cleanup true aprsme-app
+
+volumes:
+  storage:
+    driver: local
