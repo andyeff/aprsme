@@ -7,9 +7,13 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: postgres
+    app: postgres
   name: postgres
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
   strategy:
     type: Recreate
   template:
@@ -21,6 +25,7 @@ spec:
       labels:
         io.kompose.network/app-tier: "true"
         io.kompose.service: postgres
+        app: postgres
     spec:
       containers:
       - env:
