@@ -7,11 +7,15 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: nginx
+    app: nginx
   name: nginx
 spec:
   replicas: 1
   strategy:
     type: Recreate
+  selector:
+    matchLabels:
+      app: nginx
   template:
     metadata:
       annotations:
@@ -21,6 +25,7 @@ spec:
       labels:
         io.kompose.network/app-tier: "true"
         io.kompose.service: nginx
+        app: nginx
     spec:
       containers:
       - image: nginx:1.17.7-alpine

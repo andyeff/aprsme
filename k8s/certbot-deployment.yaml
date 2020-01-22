@@ -7,11 +7,15 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: certbot
+    app: certbot
   name: certbot
 spec:
   replicas: 1
   strategy:
     type: Recreate
+  selector:
+    matchLabels:
+      app: certbot
   template:
     metadata:
       annotations:
@@ -20,6 +24,7 @@ spec:
       creationTimestamp: null
       labels:
         io.kompose.service: certbot
+        app: certbot
     spec:
       containers:
       - command:

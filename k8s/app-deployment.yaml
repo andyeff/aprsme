@@ -7,11 +7,15 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: app
+    app: aprsme
   name: app
 spec:
   replicas: 1
   strategy:
     type: Recreate
+  selector:
+    matchLabels:
+      app: aprsme
   template:
     metadata:
       annotations:
@@ -21,6 +25,7 @@ spec:
       labels:
         io.kompose.network/app-tier: "true"
         io.kompose.service: app
+        app: aprsme
     spec:
       containers:
       - env:

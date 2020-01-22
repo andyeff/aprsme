@@ -7,10 +7,14 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: rabbitmq
+    app: rabbitmq
   name: rabbitmq
 spec:
   replicas: 1
   strategy: {}
+  selector:
+    matchLabels:
+      app: rabbitmq
   template:
     metadata:
       annotations:
@@ -20,6 +24,7 @@ spec:
       labels:
         io.kompose.network/app-tier: "true"
         io.kompose.service: rabbitmq
+        app: rabbitmq
     spec:
       containers:
       - env:

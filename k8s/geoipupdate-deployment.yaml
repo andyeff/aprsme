@@ -7,11 +7,15 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: geoipupdate
+    app: geoipupdate
   name: geoipupdate
 spec:
   replicas: 1
   strategy:
     type: Recreate
+  selector:
+    matchLabels:
+      app: geoipupdate
   template:
     metadata:
       annotations:
@@ -21,6 +25,7 @@ spec:
       labels:
         io.kompose.network/app-tier: "true"
         io.kompose.service: geoipupdate
+        app: geoipupdate
     spec:
       containers:
       - env:

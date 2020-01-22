@@ -7,11 +7,15 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: watchtower
+    app: watchtower
   name: watchtower
 spec:
   replicas: 1
   strategy:
     type: Recreate
+  selector:
+    matchLabels:
+      app: watchtower
   template:
     metadata:
       annotations:
@@ -20,6 +24,7 @@ spec:
       creationTimestamp: null
       labels:
         io.kompose.service: watchtower
+        app: watchtower
     spec:
       containers:
       - args:
