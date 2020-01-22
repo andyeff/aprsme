@@ -9,7 +9,9 @@ Configure a namespaced context for kubectl: (example using docker w/ kubernetes)
 (Swap out cluster/user for the existing from the result of kubectl config view)  
 `kubectl config view`  
 `kubectl config current-context`  
-`kubectl config set-context dev --namespace=aprsme-dev \\n--cluster=docker-desktop \\n--user=docker-desktop`  
+`kubectl config set-context dev --namespace=aprsme-dev \`  
+`--cluster=docker-desktop \`  
+`--user=docker-desktop`  
 `kubectl config view`  
 `kubectl config use-context dev`
 
