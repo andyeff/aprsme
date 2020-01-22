@@ -1,0 +1,403 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./docker-compose.yml
+    kompose.version: 1.20.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+    app: aprsme
+  name: app
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: aprsme
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./docker-compose.yml
+        kompose.version: 1.20.0 ()
+      creationTimestamp: null
+      labels:
+        io.kompose.network/app-tier: "true"
+        io.kompose.service: app
+        app: aprsme
+    spec:
+      containers:
+      - env:
+        - name: DATABASE_URL
+          value: postgresql://postgres:2LRfvZdwWshXUFXFEJvBkegd@postgres/aprsme
+        - name: ERL_CRASH_DUMP_BYTES
+          value: "0"
+        - name: HOSTNAME
+          value: aprs.me
+        - name: PORT
+          value: "4000"
+        - name: RABBITMQ_URL
+          value: amqp://user:bitnami@rabbitmq:5672/aprs
+        - name: SECRET_KEY_BASE
+          value: hZN8qjZYwwI2rIXtXwbCJoFl/xxxW/VSi+4Fd/ZvP4XAJiLUdKG86dF9Pu0tnrMm
+        image: aprsme/app:latest
+        name: aprsme-app
+        ports:
+        - containerPort: 4000
+        resources: {}
+        volumeMounts:
+        - mountPath: /data/geoip
+          name: app-claim0
+      restartPolicy: Always
+      volumes:
+      - name: app-claim0
+        persistentVolumeClaim:
+          claimName: app-claim0
+status: {}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./docker-compose.yml
+    kompose.version: 1.20.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: aprs-slurp
+    app: aprs-slurp
+  name: aprs-slurp
+spec:
+  replicas: 1
+  strategy: {}
+  selector:
+    matchLabels:
+      app: aprs-slurp
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./docker-compose.yml
+        kompose.version: 1.20.0 ()
+      creationTimestamp: null
+      labels:
+        io.kompose.network/app-tier: "true"
+        io.kompose.service: aprs-slurp
+        app: aprs-slurp
+    spec:
+      containers:
+      - env:
+        - name: APRS_SERVER
+          value: g.vntx.net:10152
+        - name: APRS_USERNAME
+          value: APRSME-99
+        - name: RABBITMQ_HOST
+          value: rabbitmq
+        - name: RABBITMQ_PASSWORD
+          value: bitnami
+        - name: RABBITMQ_PORT
+          value: "5672"
+        - name: RABBITMQ_USERNAME
+          value: user
+        - name: RABBITMQ_VHOST
+          value: aprs
+        image: aprsme/aprs_slurp:latest
+        name: aprs-slurp
+        resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./docker-compose.yml
+    kompose.version: 1.20.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: certbot
+    app: certbot
+  name: certbot
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: certbot
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./docker-compose.yml
+        kompose.version: 1.20.0 ()
+      creationTimestamp: null
+      labels:
+        io.kompose.service: certbot
+        app: certbot
+    spec:
+      containers:
+      - command:
+        - /bin/sh
+        - -c
+        - trap exit TERM; while :; do certbot renew; sleep 12h & wait ${!}; done;
+        image: certbot/certbot
+        name: certbot
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/letsencrypt
+          name: certbot-claim0
+        - mountPath: /var/www/certbot
+          name: certbot-claim1
+      restartPolicy: Always
+      volumes:
+      - name: certbot-claim0
+        persistentVolumeClaim:
+          claimName: certbot-claim0
+      - name: certbot-claim1
+        persistentVolumeClaim:
+          claimName: certbot-claim1
+status: {}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./docker-compose.yml
+    kompose.version: 1.20.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: geoipupdate
+    app: geoipupdate
+  name: geoipupdate
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: geoipupdate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./docker-compose.yml
+        kompose.version: 1.20.0 ()
+      creationTimestamp: null
+      labels:
+        io.kompose.network/app-tier: "true"
+        io.kompose.service: geoipupdate
+        app: geoipupdate
+    spec:
+      containers:
+      - env:
+        - name: ACCOUNT_ID
+          value: "165665"
+        - name: GEOIP_DB_DIR
+          value: /opt/geoip
+        - name: LICENSE_KEY
+          value: ZTErFxgJ2JKy3ZvJ
+        image: tkrs/maxmind-geoipupdate:latest
+        name: geoipupdate
+        resources: {}
+        volumeMounts:
+        - mountPath: /opt/geoip
+          name: geoipupdate-claim0
+      restartPolicy: Always
+      volumes:
+      - name: geoipupdate-claim0
+        persistentVolumeClaim:
+          claimName: geoipupdate-claim0
+status: {}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./docker-compose.yml
+    kompose.version: 1.20.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx
+    app: nginx
+  name: nginx
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./docker-compose.yml
+        kompose.version: 1.20.0 ()
+      creationTimestamp: null
+      labels:
+        io.kompose.network/app-tier: "true"
+        io.kompose.service: nginx
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:1.17.7-alpine
+        name: nginx
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d
+          name: nginx-claim0
+        - mountPath: /etc/letsencrypt
+          name: nginx-claim1
+        - mountPath: /var/www/certbot
+          name: nginx-claim2
+      restartPolicy: Always
+      volumes:
+      - name: nginx-claim0
+        persistentVolumeClaim:
+          claimName: nginx-claim0
+      - name: nginx-claim1
+        persistentVolumeClaim:
+          claimName: nginx-claim1
+      - name: nginx-claim2
+        persistentVolumeClaim:
+          claimName: nginx-claim2
+status: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./docker-compose.yml
+    kompose.version: 1.20.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: postgres
+    app: postgres
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./docker-compose.yml
+        kompose.version: 1.20.0 ()
+      creationTimestamp: null
+      labels:
+        io.kompose.network/app-tier: "true"
+        io.kompose.service: postgres
+        app: postgres
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_DB
+          value: aprsme
+        - name: POSTGRES_PASSWORD
+          value: 2LRfvZdwWshXUFXFEJvBkegd
+        image: mdillon/postgis:11-alpine
+        name: postgres
+        ports:
+        - containerPort: 5432
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: postgres-claim0
+      restartPolicy: Always
+      volumes:
+      - name: postgres-claim0
+        persistentVolumeClaim:
+          claimName: postgres-claim0
+status: {}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./docker-compose.yml
+    kompose.version: 1.20.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: rabbitmq
+    app: rabbitmq
+  name: rabbitmq
+spec:
+  replicas: 1
+  strategy: {}
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./docker-compose.yml
+        kompose.version: 1.20.0 ()
+      creationTimestamp: null
+      labels:
+        io.kompose.network/app-tier: "true"
+        io.kompose.service: rabbitmq
+        app: rabbitmq
+    spec:
+      containers:
+      - env:
+        - name: RABBITMQ_VHOST
+          value: aprs
+        image: bitnami/rabbitmq:latest
+        name: rabbitmq
+        ports:
+        - containerPort: 15672
+        - containerPort: 5672
+        resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./docker-compose.yml
+    kompose.version: 1.20.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: watchtower
+    app: watchtower
+  name: watchtower
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: watchtower
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./docker-compose.yml
+        kompose.version: 1.20.0 ()
+      creationTimestamp: null
+      labels:
+        io.kompose.service: watchtower
+        app: watchtower
+    spec:
+      containers:
+      - args:
+        - --interval
+        - "59"
+        - --cleanup
+        - "true"
+        - aprsme-app
+        image: v2tec/watchtower
+        name: watchtower
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/run/docker.sock
+          name: watchtower-claim0
+      restartPolicy: Always
+      volumes:
+      - name: watchtower-claim0
+        persistentVolumeClaim:
+          claimName: watchtower-claim0
+status: {}
