@@ -30,3 +30,4 @@ data/geoip
 data/certbot
 .env
 
+k8s/_delete.sh
